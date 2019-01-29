@@ -13,17 +13,15 @@ jobs:
           background: true
       - checkout
 
-      - run: npm install # this automatically runs "npm prepare" too
-        # Note that for CI to work properly, our lerna command for "npm prepare" in package.json needs to 
-        # have "--concurrency=2", otherwise we may run out of memory. This is a known issue with Lerna.
+      - run: npm install
       - run: npm run lint
       - run: npm run build
 
       - run: mkdir -p reports/junit
       - run:
-          command: cd ~/project/packages/ldclient-electron && npm run test:junit
+          command: npm run test:junit
           environment:
-            JEST_JUNIT_OUTPUT: "./reports/junit/electron-test-results.xml"
+            JEST_JUNIT_OUTPUT: "./reports/junit/js-test-results.xml"
             DISPLAY: ":99.0"  # so Electron will use xvfb
 
       - run: cd ~/project && npm run check-typescript
