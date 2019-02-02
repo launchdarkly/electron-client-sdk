@@ -2,10 +2,6 @@
 
 [![Circle CI](https://circleci.com/gh/launchdarkly/electron-client.svg?style=svg)](https://circleci.com/gh/launchdarkly/electron-client)
 
-# This is a beta release
-
-The Electron SDK should not be used in production environments until a final version is released.
-
 ## Introduction
 
 This is the official LaunchDarkly client-side JavaScript SDK for [Electron](https://electronjs.org/) applications. It can be used in either the main process or a renderer process, or both. Its API closely resembles the LaunchDarkly [JavaScript SDK for browsers](https://github.com/launchdarkly/js-client), so many of its types and interfaces are specified in that project's [TypeScript definitions](https://github.com/launchdarkly/js-client/tree/master/packages/ldclient-js-common/typings.d.ts).
@@ -14,8 +10,6 @@ The SDK provides the same functionality as all of the LaunchDarkly SDKs:
 
 * Making feature flags available to your application code.
 * Sending events to LaunchDarkly for analytics and/or A/B testing.
-
-For an example of using the SDK in a simple Electron application, see [`hello-electron`](https://github.com/launchdarkly/hello-electron).
 
 Like the browser SDK, the Electron SDK is _client-side_-- that is, it is meant to be used with code that is deployed to an end user, either in a web browser or in a desktop application. It does not use the SDK key that the server-side SDKs use, since an end user who acquired that key could use it to access the details of your LaunchDarkly environment; instead, it uses the "client-side ID" associated with your environment.
 
@@ -203,21 +197,17 @@ wrappedClient.waitForInitialization().then(function() {
 
 Keep in mind that the underlying implementation is still the client-side SDK, which has a single-current-user model. Therefore, when you call `client.variation(flagKey, user, defaultValue)` it is really calling `client.identify(user)` first, obtaining flag values for that user, and then evaluating the flag. This will perform poorly if you attempt to evaluate flags for a variety of different users in rapid succession.
 
-## Development information
+## Learn more
 
-The basic client logic that is shared by the Electron SDK and the browser SDK is in the `ldclient-js-common` package within [js-client](https://github.com/launchdarkly/js-client), which is published separately to NPM.
+For an additional overview, see the online [Electron SDK Reference](https://docs.launchdarkly.com/docs/electron-sdk-reference).
 
-To build and test the project, from the project root directory:
-* `npm install`
-* `npm test`
+The authoritative full description of all properties and methods is in the TypeScript declaration files [here](typings.d.ts) and [here](https://github.com/launchdarkly/js-client/tree/master/packages/ldclient-js-common/typings.d.ts).
 
-## Community
+For an example of using the SDK in a simple Electron application, see [`hello-electron`](https://github.com/launchdarkly/hello-electron).
 
-Here are resources from our awesome community:
+## Contributing
 
-* [TrueCar/react-launch-darkly](https://github.com/TrueCar/react-launch-darkly/): A set of component helpers to add support for LaunchDarkly to your React.js app
-* [yusinto/ld-redux](https://github.com/yusinto/ld-redux/): A library to integrate LaunchDarkly with React and Redux
-* [tdeekens/flopflip](https://github.com/tdeekens/flopflip): A flexible feature-toggling library that integrates with LaunchDarkly
+We encourage pull-requests and other contributions from the community. We've also published an [SDK contributor's guide](http://docs.launchdarkly.com/docs/sdk-contributors-guide) that provides a detailed explanation of how our SDKs work. See [CONTRIBUTING](CONTRIBUTING.md) for more developer information about this project.
 
 ## About LaunchDarkly
 
