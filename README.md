@@ -1,6 +1,7 @@
 # LaunchDarkly JavaScript SDK for Electron
 
 [![Circle CI](https://circleci.com/gh/launchdarkly/electron-client.svg?style=svg)](https://circleci.com/gh/launchdarkly/electron-client)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flaunchdarkly%2Felectron-client.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Flaunchdarkly%2Felectron-client?ref=badge_shield)
 
 ## Introduction
 
@@ -239,3 +240,7 @@ We encourage pull-requests and other contributions from the community. We've als
     for the latest product updates
   * [Feature Flagging Guide](https://github.com/launchdarkly/featureflags/ 'Feature Flagging Guide')
     for best practices and strategies
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flaunchdarkly%2Felectron-client.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Flaunchdarkly%2Felectron-client?ref=badge_large)
