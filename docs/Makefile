@@ -6,10 +6,9 @@
 #
 # The current solution is to run TypeDoc on a hacked-together file that puts all of the types directly
 # into one package. The sed commands below create this temporary declaration file by taking the types file
-# from ldclient-electron and replacing the section in between DOCBUILD-START-REPLACE and DOCBUILD-END-REPLACE
-# with the section of the types file from ldclient-js-common in between DOCBUILD-START-EXCERPT and
-# DOCBUILD-END-EXCERPT. We then run TypeDoc from the docs directory, which contains its own tsconfig.json
-# that points to the temporarily file instead of the original files.
+# from ldclient-js and replacing the ldclient-js-common imports with the actual contents of the
+# ldclient-js-common module. We then run TypeDoc from the docs directory, which contains its own
+# tsconfig.json that points to the temporarily file instead of the original files.
 #
 # We also do a little search-and-replace trickery to change linked references to "LDClient.someMethod" to
 # "LDElectronMainClient.someMethod or LDElectronRendererClient.someMethod".
@@ -23,8 +22,12 @@ html: prepare
 prepare:
 	rm -rf build
 	mkdir build
-	sed -n '/DOCBUILD-START-EXCERPT/,/DOCBUILD-END-EXCERPT/p' ../node_modules/ldclient-js-common/typings.d.ts | \
+	@# Extract the whole module declaration from ldclient-js-common, then remove the first and last lines;
+	@# also search and replace client class name as described above
+	sed -n '/^declare module/,/^}/p' ../node_modules/ldclient-js-common/typings.d.ts | \
+		sed '1d;$$d' | \
 		sed -e 's/\[\[LDClient\.\([^]]*\)\]\]/[[LDElectronMainClient.\1]] or [[LDElectronRendererClient.\1]]/g' \
 		>build/common-excerpt
+	@# Replace the block from DOCBUILD-START-REPLACE to DOCBUILD-END-REPLACE with that excerpt
 	sed -e '/DOCBUILD-END-REPLACE/r build/common-excerpt' ../typings.d.ts | \
 		sed -e '/DOCBUILD-START-REPLACE/,/DOCBUILD-END-REPLACE/d' >build/typings.d.ts
