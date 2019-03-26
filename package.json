@@ -1,6 +1,6 @@
 {
   "name": "ldclient-electron",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "LaunchDarkly SDK for Electron",
   "author": "LaunchDarkly <team@launchdarkly.com>",
   "license": "Apache-2.0",
@@ -70,6 +70,7 @@
     "semver": "5.5.0",
     "semver-compare": "1.0.0",
     "sinon": "4.5.0",
+    "typedoc": "0.14.2",
     "typescript": "3.0.1"
   },
   "dependencies": {

@@ -1,9 +1,15 @@
 /**
- * The LaunchDarkly JavaScript client interfaces - Electron SDK version.
+ * This is the API reference for the LaunchDarkly SDK for Electron.
  *
- * Documentation: http://docs.launchdarkly.com/docs/js-sdk-reference
+ * In typical usage, you will call [[initializeInMain]] in the main process at startup time to obtain
+ * an instance of [[LDElectronMainClient]]-- and, optionally, call [[initializeInRenderer]] in a
+ * renderer process to obtain a corresponding instance of [[LDElectronRendererClient]].
+ *
+ * For more information, see the [SDK reference guide](http://docs.launchdarkly.com/docs/electron-sdk-reference).
  */
 declare module 'ldclient-electron' {
+
+//// DOCBUILD-START-REPLACE  (see docs/Makefile)
   export * from 'ldclient-js-common';
 
   import {
@@ -15,17 +21,35 @@ declare module 'ldclient-electron' {
     LDOptionsBase,
     LDUser
   } from 'ldclient-js-common';
+//// DOCBUILD-END-REPLACE
 
   /**
    * Creates an instance of the LaunchDarkly Electron client to be used in the main process.
+   *
+   * @param envKey
+   *   The LaunchDarkly environment ID.
+   * @param user
+   *   The initial user properties. These can be changed later with [[LDElectronMainClient.identify]].
+   * @param options
+   *   Optional configuration settings.
    */
-  export const initializeInMain: (envKey: string, user: LDUser, options?: LDOptions) => LDElectronMainClient;
+  export function initializeInMain(envKey: string, user: LDUser, options?: LDOptions): LDElectronMainClient;
 
   /**
    * Creates an instance of the LaunchDarkly Electron client to be used in a renderer process, which
    * will receive all of its state from a client in the main process.
+   *
+   * @param envKey
+   *   The LaunchDarkly environment ID. This can usually be omitted because it can be obtained from the
+   *   [[LDElectronMainClient]] instance in the main process. You only need to specify it here if there
+   *   are multiple client instances with different environment IDs.
+   * @param options
+   *   Optional configuration settings. Since the main process client controls all communication with
+   *   LaunchDarkly, the only options that can actually be set for the renderer client are the ones that
+   *   control event generation: `sendEvents`, `allAttributesPrivate`, `privateAttributeNames`,
+   *   `allowFrequentDuplicateEvents`, and `sendEventsOnlyForVariation`.
    */
-  export const initializeInRenderer: (envKey?: string, options?: LDOptions) => LDElectronRendererClient;
+  export function initializeInRenderer(envKey?: string, options?: LDOptions): LDElectronRendererClient;
 
   /**
    * Initialization options for the LaunchDarkly Electron SDK.
@@ -34,42 +58,47 @@ declare module 'ldclient-electron' {
   }
 
   /**
-   * The LaunchDarkly client's instance interface.
+   * The LaunchDarkly SDK client object for use in an Electron main process.
    *
-   * @see http://docs.launchdarkly.com/docs/js-sdk-reference
+   * Applications should configure the client at startup time with [[initializeInMain]], and reuse the same instance.
+   *
+   * For more information, see the [SDK Reference Guide](http://docs.launchdarkly.com/docs/electron-sdk-reference).
    */
   export interface LDElectronMainClient extends LDClientBase {
     /**
-     * Builds an object that encapsulates the state of all feature flags for the current user,
-     * including the flag values and also metadata that can be used on the front end. This
+     * Builds an object that encapsulates the state of all feature flags for a given user.
+     * This includes the flag values and also metadata that can be used on the front end. This
      * method does not send analytics events back to LaunchDarkly.
      *
      * The most common use case for this method is to bootstrap a set of client-side
-     * feature flags from a back-end service. Call the toJSON() method of the returned object
+     * feature flags from a back-end service. Call the `toJSON()` method of the returned object
      * to convert it to the data structure used by the client-side SDK.
      *
      * Note that in an Electron application, it is normally unnecessary to use this method to
      * pass flags to a client in a renderer process. Instead, the standard way to do this is to
-     * use initializeInRenderer() to create a client that automatically synchronizes itself with
+     * use [[initializeInRenderer]] to create a client that automatically synchronizes itself with
      * the main process client. However, this method is still provided for compatibility in case
      * you are adapting code that used this mechanism with one of the server-side SDKs.
      * 
      * @returns the state object
      */
-    allFlagsState: () => LDFlagsState;
+    allFlagsState(): LDFlagsState;
   }
 
   /**
-   * The LaunchDarkly client's instance interface.
+   * The LaunchDarkly SDK client object for use in an Electron renderer process.
    *
-   * @see http://docs.launchdarkly.com/docs/js-sdk-reference
+   * Applications should configure the client at page load time with [[initializeInRenderer]]. It is basically a
+   * proxy for the client instance in the main process, and is automatically kept in sync with the main client's state. 
+   *
+   * For more information, see the [SDK Reference Guide](http://docs.launchdarkly.com/docs/electron-sdk-reference).
    */
   export interface LDElectronRendererClient extends LDClientBase {
   }
 
   /**
-   * An object that contains the state of all feature flags, generated by the client's
-   * allFlagsState() method.
+   * An object that contains the state of all feature flags, generated by the
+   * [[LDElectronMainClient.allFlagsState]] method.
    */
   export interface LDFlagsState {
     /**
@@ -82,25 +111,29 @@ declare module 'ldclient-electron' {
     /**
      * Returns the value of an individual feature flag at the time the state was recorded.
      * It will be null if the flag returned the default value, or if there was no such flag.
-     * @param key the flag key
+     *
+     * @param key
+     *   The flag key.
      */
-    getFlagValue: (key: string) => LDFlagValue;
+    getFlagValue(key: string): LDFlagValue;
 
     /**
      * Returns the evaluation reason for a feature flag at the time the state was recorded.
      * It will be null if reasons were not recorded, or if there was no such flag.
-     * @param key the flag key
+     *
+     * @param key
+     *   The flag key.
      */
-    getFlagReason: (key: string) => LDEvaluationReason;
+    getFlagReason(key: string): LDEvaluationReason;
     
     /**
      * Returns a map of feature flag keys to values. If a flag would have evaluated to the
      * default value, its value will be null.
      *
      * Do not use this method if you are passing data to the front end to "bootstrap" the
-     * JavaScript client. Instead, use toJSON().
+     * JavaScript client. Instead, use [[toJSON]].
      */
-    allValues: () => LDFlagSet;
+    allValues(): LDFlagSet;
 
     /**
      * Returns a Javascript representation of the entire state map, in the format used by
@@ -110,211 +143,238 @@ declare module 'ldclient-electron' {
      * Do not rely on the exact shape of this data, as it may change in future to support
      * the needs of the JavaScript client.
      */
-    toJSON: () => object;
+    toJSON(): object;
   }
 
   /**
    * Wraps an instance of the LaunchDarkly Electron main-process client with an alternate interface
    * that is the same as the LaunchDarkly Node SDK. This is intended to make it easier to port
    * LaunchDarkly-enabled Node.js code to Electron.
+   *
+   * @param client
+   *   An instance of [[LDElectronMainClient]] created with [[initializeInMain]].
+   * @returns
+   *   An instance of [[LDElectronNodeAdapterClient]] that controls the same SDK client.
    */
-  export const createNodeSdkAdapter: (client: LDElectronMainClient) => LDElectronNodeAdapterClient;
+  export function createNodeSdkAdapter(client: LDElectronMainClient): LDElectronNodeAdapterClient;
 
   /**
-   * Interface for the Node SDK compatibility wrapper returned by createNodeSdkAdapter().
+   * Interface for the Node SDK compatibility wrapper returned by [[createNodeSdkAdapter]].
    *
    * Keep in mind that the underlying implementation is still the client-side SDK, which has a
-   * single-current-user model. Therefore, when you call variation(flagKey, user, defaultValue),
-   * it is really calling identify(user) first, obtaining flag values for that user, and then
+   * single-current-user model. Therefore, when you call `variation(flagKey, user, defaultValue)`,
+   * it is really calling `identify(user)` first, obtaining flag values for that user, and then
    * evaluating the flag. This will perform poorly if you attempt to evaluate flags for a variety
    * of different users in rapid succession.
    */
   export interface LDElectronNodeAdapterClient {
     /**
-     * @returns Whether the client library has completed initialization.
-     */
-    initialized: () => boolean;
-
-    /**
-     * Returns a Promise that will be resolved if and when the client is successfully initialized.
-     * If initialization fails, the Promise will not resolve, but will not be rejected either
-     * (unlike waitForInitialization).
+     * Tests whether the client has completed initialization.
      *
-     * This method is deprecated and will be removed in a future release. Instead, use
-     * waitForInitialization(), which waits for either success or failure.
+     * If this returns false, it means that the client has not yet successfully connected to LaunchDarkly.
+     * It might still be in the process of starting up, or it might be attempting to reconnect after an
+     * unsuccessful attempt, or it might have received an unrecoverable error (such as an invalid SDK key)
+     * and given up.
      *
-     * @returns a Promise containing the initialization state of the client
+     * @returns
+     *   True if the client has successfully initialized.
      */
-    waitUntilReady: () => Promise<void>;
+    initialized(): boolean;
 
     /**
-     * Returns a Promise that will be resolved if the client successfully initializes, or
-     * rejected if client initialization has irrevocably failed (for instance, if it detects
-     * that the SDK key is invalid). The success and failure cases can also be detected by listening
-     * for the events "ready" and "failed".
-     * @returns a Promise containing the initialization state of the client; if successful, the resolved
-     * value is the same client object
+     * Returns a Promise that tracks the client's initialization state.
+     *
+     * **Deprecated**: please use [[waitForInitialization]] instead. The difference between that method
+     * and this one is that `waitUntilReady` never rejects the Promise, even if initialization fails.
+     *
+     * @returns
+     *   A Promise that will be resolved if the client initializes successfully.
      */
-    waitForInitialization: () => Promise<LDElectronNodeAdapterClient>;
+    waitUntilReady(): Promise<void>;
 
     /**
-     * Retrieves a flag's value.
+     * Returns a Promise that tracks the client's initialization state.
+     *
+     * The Promise will be resolved if the client successfully initializes, or rejected if client
+     * initialization has irrevocably failed (for instance, if it detects that the SDK key is invalid).
+     *
+     * Note that you can also use event listeners ([[on]]) for the same purpose: the event `"ready"`
+     * indicates success, and `"failed"` indicates failure.
+     * 
+     * @returns
+     *   A Promise that will be resolved if the client initializes successfully, or rejected if it
+     *   fails. If successful, the result is the same client object.
+     */
+    waitForInitialization(): Promise<LDElectronNodeAdapterClient>;
+
+    /**
+     * Determines the variation of a feature flag for a user.
      *
      * @param key
-     *   The key of the flag for which to retrieve the corresponding value.
+     *   The unique key of the feature flag.
      * @param user
-     *   The user for the variation.
-     *
-     *   The variation call will automatically create a user in LaunchDarkly if a user with that user key doesn't exist already.
-     *
+     *   The end user requesting the flag. The client will generate an analytics event to register
+     *   this user with LaunchDarkly if the user does not already exist.
      * @param defaultValue
-     *   The value to use if the flag is not available (for example, if the
-     *   user is offline or a flag is requested that does not exist).
-     *
+     *   The default value of the flag, to be used if the value is not available from LaunchDarkly.
      * @param callback
-     *   The callback to receive the variation result.
-     *
-     * @returns a Promise containing the flag value
+     *   A Node-style callback to receive the result value. If omitted, you will receive a Promise instead.
+     * @returns
+     *   If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
+     *   with the result value.
      */
-    variation: (
+    variation(
       key: string,
       user: LDUser,
       defaultValue: LDFlagValue,
       callback?: (err: any, res: LDFlagValue) => void
-    ) => Promise<LDFlagValue>;
+    ): Promise<LDFlagValue> | void;
 
     /**
-     * Retrieves a flag's value, along with information about how it was calculated, in the form
-     * of an LDEvaluationDetail object.
+     * Determines the variation of a feature flag for a user, along with information about how it was
+     * calculated.
      *
-     * The reason property of the result will also be included in analytics events, if you are
+     * The `reason` property of the result will also be included in analytics events, if you are
      * capturing detailed event data for this flag.
      *
+     * For more information, see the [SDK reference guide](https://docs.launchdarkly.com/docs/evaluation-reasons).
+     *
      * @param key
-     *   The key of the flag for which to retrieve the corresponding value.
+     *   The unique key of the feature flag.
      * @param user
-     *   The user for the variation.
-     *
-     *   The variation call will automatically create a user in LaunchDarkly if a user with that user key doesn't exist already.
-     *
+     *   The end user requesting the flag. The client will generate an analytics event to register
+     *   this user with LaunchDarkly if the user does not already exist.
      * @param defaultValue
-     *   The value to use if the flag is not available (for example, if the
-     *   user is offline or a flag is requested that does not exist).
-     *
+     *   The default value of the flag, to be used if the value is not available from LaunchDarkly.
      * @param callback
-     *   The callback to receive the result.
-     *
-     * @returns a Promise containing the flag value and explanation
+     *   A Node-style callback to receive the result (as an [[LDEvaluationDetail]]). If omitted, you
+     *   will receive a Promise instead.
+     * @returns
+     *   If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
+     *   with the result (as an [[LDEvaluationDetail]]).
      */
-    variationDetail: (
+    variationDetail(
       key: string,
       user: LDUser,
       defaultValue: LDFlagValue,
       callback?: (err: any, res: LDEvaluationDetail) => void
-    ) => Promise<LDEvaluationDetail>;
+    ): Promise<LDEvaluationDetail> | void;
 
     /**
      * Retrieves the set of all flag values for a user.
      *
-     * This method is deprecated; use allFlagsState() instead. Current versions of the client-side
-     * SDK will not generate analytics events correctly if you pass the result of allFlags().
+     * **Deprecated**: use [[allFlagsState]] instead. Current versions of the client-side
+     * SDK will not generate analytics events correctly if you pass the result of `allFlags()`.
      *
      * @param user
+     *   The end user requesting the feature flags.
      * @param callback
-     *   The node style callback to receive the variation result.
-     * @returns a Promise containing the set of all flag values for a user
+     *   A Node-style callback to receive the result (as an [[LDFlagSet]]). If omitted, you
+     *   will receive a Promise instead.
+     * @returns
+     *   If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
+     *   with the result as an [[LDFlagSet]].
      */
-    allFlags: (
+    allFlags(
       user: LDUser,
       callback?: (err: any, res: LDFlagSet) => void
-    ) => Promise<LDFlagSet>;
+    ): Promise<LDFlagSet>;
 
     /**
-     * Builds an object that encapsulates the state of all feature flags for a given user,
-     * including the flag values and also metadata that can be used on the front end. This
+     * Builds an object that encapsulates the state of all feature flags for a given user.
+     * This includes the flag values and also metadata that can be used on the front end. This
      * method does not send analytics events back to LaunchDarkly.
      *
      * The most common use case for this method is to bootstrap a set of client-side
-     * feature flags from a back-end service. Call the toJSON() method of the returned object
+     * feature flags from a back-end service. Call the `toJSON()` method of the returned object
      * to convert it to the data structure used by the client-side SDK.
      *
-     * @param user The end user requesting the feature flags.
-     * @param options Ignored - no options are supported for this method in Electron.
-     * @param callback The node-style callback to receive the state result.
-     * @returns a Promise containing the state object
+     * @param user
+     *   The end user requesting the feature flags.
+     * @param options
+     *   Optional [[LDFlagsStateOptions]] to determine how the state is computed.
+     * @param callback
+     *   A Node-style callback to receive the result (as an [[LDFlagsState]]). If omitted, you
+     *   will receive a Promise instead.
+     * @returns
+     *   If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
+     *   with the result as an [[LDFlagsState]].
      */
-    allFlagsState: (
+    allFlagsState(
       user: LDUser,
       options?: object,
       callback?: (err: any, res: LDFlagsState) => void
-    ) => Promise<LDFlagsState>;
+    ): Promise<LDFlagsState>;
 
     /**
-     * In the Node SDK, secureModeHash computes an HMAC signature of a user signed with the
+     * In the Node SDK, `secureModeHash` computes an HMAC signature of a user signed with the
      * client's SDK key. This is not possible in Electron because the SDK key is not available,
-     * so secureModeHash will always return an empty string.
+     * so `secureModeHash` will always return an empty string.
      *
      * @param user
      *
-     * @returns An empty string
+     * @returns An empty string.
      */
-    secureModeHash: (user: LDUser) => string;
+    secureModeHash(user: LDUser): string;
 
     /**
-     * Closes all connections and resources used by the client.
-     */
-    close: () => void;
-
-    /**
+     * Discards all network connections, background tasks, and other resources held by the client.
      *
-     * @returns Whether the client is configured in offline mode.
+     * Do not attempt to use the client after calling this method.
      */
-    isOffline: () => boolean;
+    close(): void;
 
     /**
-     * Track page events to use in goals or A/B tests.
+     * Tests whether the client is configured in offline mode.
      *
-     * LaunchDarkly automatically tracks pageviews and clicks that are
-     * specified in the Goals section of their dashboard. This can be used
-     * to track custom goals or other events that do not currently have
-     * goals.
+     * @returns
+     *   True if the `offline` property is true in your [[LDOptions]].
+     */
+    isOffline(): boolean;
+
+    /**
+     * Tracks that a user performed an event.
+     *
+     * LaunchDarkly automatically tracks pageviews and clicks that are specified in the Goals
+     * section of the dashboard. This can be used to track custom goals or other events that do
+     * not currently have goals.
      *
      * @param key
-     *   The event to record.
+     *   The name of the event, which may correspond to a goal in A/B tests.
      * @param user
      *   The user to track.
      * @param data
-     *   Additional information to associate with the event.
+     *   Optional additional information to associate with the event.
      */
-    track: (key: string, user: LDUser, data?: any) => void;
+    track(key: string, user: LDUser, data?: any): void;
 
     /**
      * Identifies a user to LaunchDarkly.
      *
-     * This only needs to be called if the user changes identities because
-     * normally the user's identity is set during client initialization.
+     * This simply creates an analytics event that will transmit the given user properties to
+     * LaunchDarkly, so that the user will be visible on your dashboard even if you have not
+     * evaluated any flags for that user. It has no other effect.
      *
      * @param user
-     *   A map of user options. Must contain at least the `key` property
-     *   which identifies the user.
+     *   The user properties. Must contain at least the `key` property.
      */
-    identify: (user: LDUser) => void;
+    identify(user: LDUser): void;
 
     /**
-     * Flush the queue
+     * Flushes all pending analytics events.
      *
-     * Internally, the LaunchDarkly SDK keeps an event queue for track and identify calls.
-     * These are flushed periodically (see configuration option: flushInterval)
-     * and when the queue size limit (see configuration option: capacity) is reached.
+     * Normally, batches of events are delivered in the background at intervals determined by the
+     * `flushInterval` property of [[LDOptions]]. Calling `flush()` triggers an immediate delivery.
      *
      * @param callback
-     *    A function which will be called when the flush completes; if omitted, you
-     *    will receive a Promise instead
+     *   A function which will be called when the flush completes. If omitted, you
+     *   will receive a Promise instead.
      *
-     * @returns a Promise which resolves once flushing is finished, if you did not
-     * provide a callback; note that it will be rejected if the HTTP request fails, so be
-     * sure to provide a rejection handler if you are not using a callback
+     * @returns
+     *   If you provided a callback, then nothing. Otherwise, a Promise which resolves once
+     *   flushing is finished. Note that the Promise will be rejected if the HTTP request
+     *   fails, so be sure to attach a rejection handler to it.
      */
-    flush: (callback?: (err: any, res: boolean) => void) => Promise<void>;
+    flush(callback?: (err: any, res: boolean) => void): Promise<void>;
   }
 }
