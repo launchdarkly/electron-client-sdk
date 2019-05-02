@@ -51,7 +51,8 @@ export function createNodeSdkAdapter(realClient) {
       }).catch(() => {}), // suppress errors because the Promise will not normally be used
 
     identify: user => {
-      realClient.identify(user).catch(() => {});
+      // Note that track() does not actually return a Promise in the Node SDK, but it's helpful for testing
+      return realClient.identify(user).catch(() => {});
     },
 
     secureModeHash: () => {

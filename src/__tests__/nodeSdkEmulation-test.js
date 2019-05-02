@@ -1,4 +1,4 @@
-import sinon from 'sinon';
+import * as httpServer from './http-server';
 
 import * as LDClient from '../index';
 
@@ -13,210 +13,184 @@ describe('Node-style API wrapper', () => {
   const flagsBootstrap = { flag: 'a', $flagsState: { flag: { variation: 1 } } };
   const flagKey = 'flag';
   const flagValue = 'a';
-  let xhr;
-  let requests = [];
   let warnSpy;
+  let server;
 
   beforeEach(() => {
-    xhr = sinon.useFakeXMLHttpRequest();
-    xhr.onCreate = function(req) {
-      requests.push(req);
-    };
     warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    requests = [];
-    xhr.restore();
+    httpServer.closeServers();
     warnSpy.mockRestore();
   });
 
-  function respondWithFlags() {
-    setImmediate(() => {
-      expect(requests.length).toEqual(1);
-      requests[0].respond(200, { 'Content-Type': 'application/json' }, JSON.stringify(flags));
-    });
+  async function makeServerWithFlags() {
+    server = await httpServer.createServer();
+    httpServer.autoRespond(server, res => httpServer.respondJson(res, flags));
+    return server;
   }
 
-  function respondWithError() {
-    setImmediate(() => {
-      expect(requests.length).toEqual(1);
-      requests[0].respond(401);
-    });
+  async function makeServerWithError() {
+    server = await httpServer.createServer();
+    httpServer.autoRespond(server, res => httpServer.respond(res, 401));
+    return server;
   }
 
   function createWrappedClient(options) {
-    const client = LDClient.initializeInMain(envName, user, Object.assign({}, options, { mockHttp: true }));
+    const baseConfig = {
+      baseUrl: server.url,
+      eventsUrl: server.url
+    }
+    const client = LDClient.initializeInMain(envName, user, Object.assign(baseConfig, options));
     return LDClient.createNodeSdkAdapter(client);
   }
 
   function asyncTestWithIdentify(testFn) {
-    function doTest(changeUser, bootstrap, done) {
+    async function doTest(changeUser, bootstrap) {
+      await (changeUser ? makeServerWithFlags() : makeServerWithError());
       const wrappedClient = createWrappedClient({ bootstrap: bootstrap });
-      wrappedClient.waitForInitialization().then(() => {
-        testFn(wrappedClient, changeUser ? otherUser : user, done);
-        if (changeUser) {
-          respondWithFlags();
-        }
-      });
+      await wrappedClient.waitForInitialization();
+      await testFn(wrappedClient, changeUser ? otherUser : user);
     }
 
-    it('when user is not changed', done => {
-      doTest(false, flagsBootstrap, done);
-    });
+    it('when user is not changed', async () => await doTest(false, flagsBootstrap));
 
-    it('when user is changed', done => {
-      doTest(true, {}, done);
-    });
+    it('when user is changed', async () => await doTest(true, {}));
   }
 
-  it('supports initialized()', done => {
+  it('supports initialized()', async () => {
+    await makeServerWithFlags();
     const wrappedClient = createWrappedClient();
-
     expect(wrappedClient.initialized()).toBe(false);
 
-    wrappedClient.waitForInitialization().then(() => {
-      expect(wrappedClient.initialized()).toBe(true);
-      done();
-    });
-
-    respondWithFlags();
+    await wrappedClient.waitForInitialization();
+    expect(wrappedClient.initialized()).toBe(true);
   });
 
   describe('waitUntilReady()', () => {
-    it('resolves on success', done => {
+    it('resolves on success', async () => {
+      await makeServerWithFlags();
       const wrappedClient = createWrappedClient();
-      wrappedClient.waitUntilReady().then(done);
-      respondWithFlags();
+      await wrappedClient.waitUntilReady();
     });
 
-    it('resolves on failure', done => {
+    it('resolves on failure', async () => {
+      await makeServerWithError();
       const wrappedClient = createWrappedClient();
-      wrappedClient.waitUntilReady().then(done);
-      respondWithError();
+      await wrappedClient.waitUntilReady();
     });
   });
 
   describe('waitForInitialization()', () => {
-    it('resolves on success', done => {
+    it('resolves on success', async () => {
+      await makeServerWithFlags();
       const wrappedClient = createWrappedClient();
-      wrappedClient.waitForInitialization().then(result => {
-        expect(result).toBe(wrappedClient);
-        done();
-      });
-      respondWithFlags();
+      const result = await wrappedClient.waitForInitialization();
+      expect(result).toBe(wrappedClient);
     });
 
-    it('rejects on failure', done => {
+    it('rejects on failure', async () => {
+      await makeServerWithError();
       const wrappedClient = createWrappedClient();
-      wrappedClient.waitForInitialization().catch(() => done());
-      respondWithError();
+      await expect(wrappedClient.waitForInitialization()).rejects.toThrow();
     });
   });
 
   describe('variation()', () => {
-    asyncTestWithIdentify((wrappedClient, user, done) => {
-      wrappedClient.variation(flagKey, user, 'default', (err, value) => {
-        expect(err).not.toBe(expect.anything());
-        expect(value).toEqual(flagValue);
-        done();
-      });
+    asyncTestWithIdentify(async (wrappedClient, user) => {
+      const value = await wrappedClient.variation(flagKey, user, 'default');
+      expect(value).toEqual(flagValue);
     });
   });
 
   describe('variationDetail()', () => {
-    asyncTestWithIdentify((wrappedClient, user, done) => {
-      wrappedClient.variationDetail(flagKey, user, 'default', (err, value) => {
-        expect(err).not.toBe(expect.anything());
-        expect(value).toEqual({ value: flagValue, variationIndex: 1, reason: null });
-        done();
-      });
+    asyncTestWithIdentify(async (wrappedClient, user) => {
+      const value = await wrappedClient.variationDetail(flagKey, user, 'default');
+      expect(value).toEqual({ value: flagValue, variationIndex: 1, reason: null });
     });
   });
 
   describe('allFlags()', () => {
-    asyncTestWithIdentify((wrappedClient, user, done) => {
-      wrappedClient.allFlags(user, (err, flags) => {
-        expect(err).not.toBe(expect.anything());
-        expect(flags).toEqual({ flag: flagValue });
-        done();
-      });
+    asyncTestWithIdentify(async (wrappedClient, user) => {
+      const flags = await wrappedClient.allFlags(user);
+      expect(flags).toEqual({ flag: flagValue });
     });
   });
 
   describe('allFlagsState()', () => {
-    asyncTestWithIdentify((wrappedClient, user, done) => {
-      wrappedClient.allFlagsState(user, (err, state) => {
-        expect(err).not.toBe(expect.anything());
-        expect(state).toEqual({
-          $valid: true,
-          flag: flagValue,
-          $flagsState: {
-            flag: {
-              variation: 1,
-            },
+    asyncTestWithIdentify(async (wrappedClient, user) => {
+      const state = await wrappedClient.allFlagsState(user);
+      expect(state).toEqual({
+        $valid: true,
+        flag: flagValue,
+        $flagsState: {
+          flag: {
+            variation: 1,
           },
-        });
-        done();
+        },
       });
     });
   });
 
   describe('supports track()', () => {
-    asyncTestWithIdentify((wrappedClient, user, done) => {
-      wrappedClient.track('my-event-key', user).then(() => {
-        wrappedClient.flush();
-
-        const lastRequest = requests[requests.length - 1];
-        expect(lastRequest.url).toMatch(/https:\/\/events\.launchdarkly\.com/);
-        expect(lastRequest.requestBody).toMatch(/my-event-key/);
-
-        done();
-      });
+    asyncTestWithIdentify(async (wrappedClient, user) => {
+      let events = [];
+      server.on('request', (req, res) =>
+        httpServer.readAll(req).then(result => {
+          if (/^\/events\/bulk\//.test(req.url)) {
+            events = events.concat(JSON.parse(result));
+          }
+          httpServer.respond(res, 200);
+        })
+      );
+      await wrappedClient.track('my-event-key', user);
+      await wrappedClient.flush();
+      
+      expect(events).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            kind: 'custom',
+            key: 'my-event-key'
+          })
+        ])
+      );
     });
   });
 
   describe('identify()', () => {
-    it('makes a flags request when switching users', done => {
+    it('makes a flags request when switching users', async () => {
+      await makeServerWithFlags();
       const wrappedClient = createWrappedClient({ bootstrap: {} });
 
-      wrappedClient.waitForInitialization().then(() => {
-        wrappedClient.identify(otherUser);
+      await wrappedClient.waitForInitialization();
+      await wrappedClient.identify(otherUser);
 
-        setImmediate(() => {
-          expect(requests.length).toEqual(1);
-          done();
-        });
-      });
+      expect(server.requests.length).toEqual(1);
     });
 
-    it('calls identify() even if user is unchanged', done => {
+    it('calls identify() even if user is unchanged', async () => {
       // The behavior we're testing here is that the wrapper always calls the underlying identify() method,
       // because the contract for identify() is that it always generates an identify event. In the future, the
       // client will be changed so that if you call identify() with the same user, it sends an event but does
       // not re-request the flags.
+      await makeServerWithFlags();
       const wrappedClient = createWrappedClient({ bootstrap: {} });
 
-      wrappedClient.waitForInitialization().then(() => {
-        wrappedClient.identify(user);
+      await wrappedClient.waitForInitialization();
+      await wrappedClient.identify(user);
 
-        setImmediate(() => {
-          expect(requests.length).toEqual(1);
-          done();
-        });
-      });
+      expect(server.requests.length).toEqual(1);
     });
   });
 
-  it('returns empty string from secureModeHash() and logs a warning', done => {
+  it('returns empty string from secureModeHash() and logs a warning', async () => {
     const wrappedClient = createWrappedClient({ bootstrap: {} });
 
-    wrappedClient.waitForInitialization().then(() => {
-      const hash = wrappedClient.secureModeHash(user);
-      expect(hash).toEqual('');
-      expect(warnSpy).toHaveBeenCalled();
-      done();
-    });
+    await wrappedClient.waitForInitialization();
+    const hash = wrappedClient.secureModeHash(user);
+    expect(hash).toEqual('');
+    expect(warnSpy).toHaveBeenCalled();
   });
 
   it('supports on()', done => {
@@ -228,7 +202,7 @@ describe('Node-style API wrapper', () => {
     const listener1 = jest.fn();
     const listener2 = jest.fn();
 
-    const wrappedClient = createWrappedClient();
+    const wrappedClient = createWrappedClient({ bootstrap: {} });
     wrappedClient.on('ready', listener1);
     wrappedClient.on('ready', listener2);
     wrappedClient.off('ready', listener1);
@@ -239,7 +213,5 @@ describe('Node-style API wrapper', () => {
 
       done();
     });
-
-    respondWithFlags();
   });
 });

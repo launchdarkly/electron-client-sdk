@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-
 import * as LDClient from '../index';
 
 // These tests cover the mechanisms by which the main-process client and renderer-process clients are
@@ -22,16 +20,6 @@ describe('interprocess sync', () => {
   };
   const expectedState = { environment: envName, user: user, flags: flags };
 
-  let xhr;
-
-  beforeEach(() => {
-    xhr = sinon.useFakeXMLHttpRequest();
-  });
-
-  afterEach(() => {
-    xhr.restore();
-  });
-
   describe('getInternalClientState', () => {
     it('returns null if no main client exists yet', () => {
       expect(LDClient.getInternalClientState(envName)).toBe(null);
@@ -43,7 +31,7 @@ describe('interprocess sync', () => {
     });
 
     it('returns state if client is ready', done => {
-      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap, mockHttp: true });
+      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap, sendEvents: false });
       client.waitForInitialization().then(() => {
         expect(LDClient.getInternalClientState(envName)).toEqual(expectedState);
         done();
@@ -51,7 +39,7 @@ describe('interprocess sync', () => {
     });
 
     it('if environment is unspecified and there is only one client, uses that one', done => {
-      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap, mockHttp: true });
+      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap, sendEvents: false });
       client.waitForInitialization().then(() => {
         expect(LDClient.getInternalClientState()).toEqual(expectedState);
         done();
@@ -59,8 +47,8 @@ describe('interprocess sync', () => {
     });
 
     it('if environment is unspecified and there are multiple clients, returns null', done => {
-      const client1 = LDClient.initializeInMain(envName, user, { bootstrap: {}, mockHttp: true });
-      const client2 = LDClient.initializeInMain(envName + '2', user, { bootstrap: bootstrap, mockHttp: true });
+      const client1 = LDClient.initializeInMain(envName, user, { bootstrap: {}, sendEvents: false });
+      const client2 = LDClient.initializeInMain(envName + '2', user, { bootstrap: bootstrap, sendEvents: false });
       client1.waitForInitialization().then(() => {
         client2.waitForInitialization().then(() => {
           expect(LDClient.getInternalClientState()).toBe(null);
