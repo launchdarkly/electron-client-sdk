@@ -40,8 +40,8 @@ describe('Node-style API wrapper', () => {
   function createWrappedClient(options) {
     const baseConfig = {
       baseUrl: server.url,
-      eventsUrl: server.url
-    }
+      eventsUrl: server.url,
+    };
     const client = LDClient.initializeInMain(envName, user, Object.assign(baseConfig, options));
     return LDClient.createNodeSdkAdapter(client);
   }
@@ -146,13 +146,13 @@ describe('Node-style API wrapper', () => {
       );
       await wrappedClient.track('my-event-key', user);
       await wrappedClient.flush();
-      
+
       expect(events).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             kind: 'custom',
-            key: 'my-event-key'
-          })
+            key: 'my-event-key',
+          }),
         ])
       );
     });

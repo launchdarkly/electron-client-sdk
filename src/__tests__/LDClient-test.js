@@ -20,7 +20,7 @@ describe('LDClient', () => {
       const server = await httpServer.createServer();
       httpServer.autoRespond(server, res => httpServer.respondJson(res, data));
 
-      const client = LDClient.initializeInMain(envName, user, { baseUrl: server.url });
+      const client = LDClient.initializeInMain(envName, user, { baseUrl: server.url, sendEvents: false });
       await client.waitForInitialization();
 
       expect(client.variation('flag')).toEqual(3);
@@ -30,7 +30,7 @@ describe('LDClient', () => {
       const server = await httpServer.createServer();
       httpServer.autoRespond(server, res => httpServer.respondJson(res, {}));
 
-      const client = LDClient.initializeInMain(envName, user, { baseUrl: server.url });
+      const client = LDClient.initializeInMain(envName, user, { baseUrl: server.url, sendEvents: false });
       await client.waitForInitialization();
 
       expect(server.requests.length).toEqual(1);

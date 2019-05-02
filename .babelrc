@@ -3,42 +3,13 @@
     "test": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
-              "browsers": ["last 2 versions"]
+              "node": "6"
             }
           }
-        ],
-        "stage-1"
-      ]
-    },
-    "development": {
-      "presets": [
-        [
-          "env",
-          {
-            "targets": {
-              "browsers": ["last 2 versions", "ie >= 11"]
-            },
-            "modules": false
-          }
-        ],
-        "stage-1"
-      ]
-    },
-    "production": {
-      "presets": [
-        [
-          "env",
-          {
-            "targets": {
-              "browsers": ["last 2 versions", "ie >= 10"]
-            },
-            "modules": false
-          }
-        ],
-        "stage-1"
+        ]
       ]
     }
   }

@@ -26,12 +26,12 @@ describe('interprocess sync', () => {
     });
 
     it('returns null if a client exists but is not ready yet', () => {
-      LDClient.initializeInMain(envName, user, { mockHttp: true });
+      LDClient.initializeInMain(envName, user, { baseUrl: 'http://bad' });
       expect(LDClient.getInternalClientState(envName)).toBe(null);
     });
 
     it('returns state if client is ready', done => {
-      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap, sendEvents: false });
+      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap });
       client.waitForInitialization().then(() => {
         expect(LDClient.getInternalClientState(envName)).toEqual(expectedState);
         done();
@@ -39,7 +39,7 @@ describe('interprocess sync', () => {
     });
 
     it('if environment is unspecified and there is only one client, uses that one', done => {
-      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap, sendEvents: false });
+      const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap });
       client.waitForInitialization().then(() => {
         expect(LDClient.getInternalClientState()).toEqual(expectedState);
         done();
