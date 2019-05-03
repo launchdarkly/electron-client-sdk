@@ -14,30 +14,6 @@ Refer to the [SDK documentation](https://docs.launchdarkly.com/docs/electron-sdk
 
 Please note that the Electron SDK, like the [browser Javascript SDK](https://docs.launchdarkly.com/docs/js-sdk-reference), has two special requirements in terms of your LaunchDarkly environment. First, in terms of the credentials for your environment that appear on your [Account Settings](https://app.launchdarkly.com/settings/projects) dashboard, the JavaScript SDK uses the "Client-side ID" (also called the environment ID)-- not the "SDK key" or the "Mobile key". Second, for any feature flag that you will be using in Electron, you must check the "Make this flag available to client-side SDKs" box on that flag's Settings page.
 
-## Implementation notes
-
-### Logging
-
-By default, the SDK uses the `winston` package. There are four logging levels: `debug`, `info`, `warn`, and `error`; by default, `debug` and `info` messages are hidden. See [`LDOptions.logger`](https://launchdarkly.github.io/electron-client-sdk/interfaces/_ldclient_js_.ldoptions.html#logger) and [`createConsoleLogger`](https://launchdarkly.github.io/electron-client-sdk/index.html#createconsolelogger)` for more details.
-
-### Node SDK compatibility mode
-
-For developers who are porting LaunchDarkly-enabled Node.js code to Electron, there are differences between the APIs that can be inconvenient. For instance, in the LaunchDarkly Node SDK, `variation()` is an asynchronous call that takes a callback, whereas in the client-side SDKs it is synchronous.
-
-To make this transition easier, the LaunchDarkly Electron SDK provides an optional wrapper that emulates the Node SDK. When creating the main-process client, after calling `initializeInMain`, pass the client object to `createNodeSdkAdapter`. The resulting object will use the Node-style API.
-
-```js
-var realClient = LDElectron.initializeInMain('YOUR_CLIENT_SIDE_ID', user, options);
-var wrappedClient = LDElectron.createNodeSdkAdapter(realClient);
-wrappedClient.waitForInitialization().then(function() {
-    wrappedClient.variation(flagKey, user, defaultValue, function(err, result) {
-        console.log('flag value is ' + result);
-    });
-});
-```
-
-Keep in mind that the underlying implementation is still the client-side SDK, which has a single-current-user model. Therefore, when you call `client.variation(flagKey, user, defaultValue)` it is really calling `client.identify(user)` first, obtaining flag values for that user, and then evaluating the flag. This will perform poorly if you attempt to evaluate flags for a variety of different users in rapid succession.
-
 ## Learn more
 
 Check out our [documentation](https://docs.launchdarkly.com) for in-depth instructions on configuring and using LaunchDarkly. You can also head straight to the [complete reference guide for this SDK](https://docs.launchdarkly.com/docs/electron-sdk-reference). Additionally, the authoritative full description of all properties, types, and methods is the [online TypeScript documentation](https://launchdarkly.github.io/electron-client-sdk/). If you are not using TypeScript, then the types are only for your information and are not enforced, although the properties and methods are still the same as described in the documentation.
