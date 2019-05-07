@@ -14,8 +14,7 @@ jobs:
       - checkout
 
       - run: npm install
-      - run: npm run lint
-      - run: npm run build
+      - run: npm run lint:all
 
       - run: mkdir -p reports/junit
       - run:
@@ -24,7 +23,8 @@ jobs:
             JEST_JUNIT_OUTPUT: "./reports/junit/js-test-results.xml"
             DISPLAY: ":99.0"  # so Electron will use xvfb
 
-      - run: cd ~/project && npm run check-typescript
+      - run: npm run check-typescript
+      
       - store_test_results:
           path: reports/junit/
       - store_artifacts:

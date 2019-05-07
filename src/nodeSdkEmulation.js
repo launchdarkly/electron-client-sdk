@@ -50,9 +50,8 @@ export function createNodeSdkAdapter(realClient) {
         realClient.track(eventName, data);
       }).catch(() => {}), // suppress errors because the Promise will not normally be used
 
-    identify: user => {
-      realClient.identify(user).catch(() => {});
-    },
+    identify: user => realClient.identify(user).catch(() => {}),
+    // Note that identify() does not actually return a Promise in the Node SDK, but it's helpful for testing
 
     secureModeHash: () => {
       console.warn('LDClient.secureModeHash is not supported in the Electron SDK');

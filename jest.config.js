@@ -10,7 +10,6 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
   },
   globals: {
-    window: true,
     VERSION: version,
   },
   runner: '@jest-runner/electron',

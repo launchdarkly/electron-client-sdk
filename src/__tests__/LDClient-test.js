@@ -1,30 +1,13 @@
-import sinon from 'sinon';
+import * as httpServer from './http-server';
 
 import * as LDClient from '../index';
 
 describe('LDClient', () => {
   const envName = 'UNKNOWN_ENVIRONMENT_ID';
   const user = { key: 'user' };
-  let warnSpy;
-  let errorSpy;
-  let xhr;
-  let requests = [];
-
-  beforeEach(() => {
-    xhr = sinon.useFakeXMLHttpRequest();
-    xhr.onCreate = function(req) {
-      requests.push(req);
-    };
-
-    warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-    errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-  });
 
   afterEach(() => {
-    requests = [];
-    xhr.restore();
-    warnSpy.mockRestore();
-    errorSpy.mockRestore();
+    httpServer.closeServers();
   });
 
   it('should exist', () => {
@@ -32,44 +15,48 @@ describe('LDClient', () => {
   });
 
   describe('initialization', () => {
-    it('should trigger the ready event', done => {
-      const handleReady = jest.fn();
-      const client = LDClient.initializeInMain(envName, user, { bootstrap: {}, mockHttp: true, sendEvents: false });
+    it('should initialize successfully', async () => {
+      const data = { flag: { value: 3 } };
+      const server = await httpServer.createServer();
+      httpServer.autoRespond(server, res => httpServer.respondJson(res, data));
 
-      client.on('ready', handleReady);
+      const client = LDClient.initializeInMain(envName, user, { baseUrl: server.url, sendEvents: false });
+      await client.waitForInitialization();
 
-      setTimeout(() => {
-        expect(handleReady).toHaveBeenCalled();
-        done();
-      }, 0);
+      expect(client.variation('flag')).toEqual(3);
     });
 
-    it('sends correct User-Agent in request', done => {
-      LDClient.initializeInMain(envName, user, { mockHttp: true });
+    it('sends correct User-Agent in request', async () => {
+      const server = await httpServer.createServer();
+      httpServer.autoRespond(server, res => httpServer.respondJson(res, {}));
 
-      setTimeout(() => {
-        expect(requests.length).toEqual(1);
-        expect(requests[0].requestHeaders['X-LaunchDarkly-User-Agent']).toMatch(/^ElectronClient\//);
-        done();
-      }, 0);
+      const client = LDClient.initializeInMain(envName, user, { baseUrl: server.url, sendEvents: false });
+      await client.waitForInitialization();
+
+      expect(server.requests.length).toEqual(1);
+      expect(server.requests[0].headers['x-launchdarkly-user-agent']).toMatch(/^ElectronClient\/1\./);
     });
   });
 
   describe('track()', () => {
-    it('should not warn when tracking an arbitrary custom event', done => {
+    it('should not warn when tracking an arbitrary custom event', async () => {
+      const logger = {
+        debug: jest.fn(),
+        info: jest.fn(),
+        warn: jest.fn(),
+        error: jest.fn(),
+      };
       const client = LDClient.initializeInMain(envName, user, {
         bootstrap: {},
-        mockHttp: true,
         sendEvents: false,
-        logger: LDClient.createConsoleLogger('warn'),
+        logger: logger,
       });
 
-      client.on('ready', () => {
-        client.track('whatever');
-        expect(warnSpy).not.toHaveBeenCalled();
-        expect(errorSpy).not.toHaveBeenCalled();
-        done();
-      });
+      await client.waitForInitialization();
+
+      client.track('whatever');
+      expect(logger.warn).not.toHaveBeenCalled();
+      expect(logger.error).not.toHaveBeenCalled();
     });
   });
 });
