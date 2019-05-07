@@ -17,60 +17,40 @@ describe('LDClient streaming', () => {
     httpServer.closeServers();
   });
 
-  function writeStream(res, flags) {
-    res.writeHead(200, { 'Content-Type': 'text/event-stream' });
-    res.write('event: put\ndata: ' + JSON.stringify(flags) + '\n\n');
-    res.end();
-  }
+  it('makes GET request and receives an event', async () => {
+    const server = await httpServer.createServer();
 
-  function readAll(req, callback) {
-    let body = '';
-    req.on('data', data => {
-      body += data;
+    server.on('request', (req, res) => {
+      expect(req.url).toEqual(expectedGetUrl);
+      expect(req.method).toEqual('GET');
+
+      httpServer.respondSSEEvent(res, 'put', { flag: { value: 'yes', version: 1 } });
     });
-    req.on('end', () => callback(body));
-  }
 
-  it('makes GET request and receives an event', done => {
-    httpServer.createServer((err, server) => {
-      err && done.fail(err);
-
-      server.on('request', (req, res) => {
-        expect(req.url).toEqual(expectedGetUrl);
-        expect(req.method).toEqual('GET');
-
-        writeStream(res, { flag: { value: 'yes', version: 1 } });
-      });
-
-      const config = { bootstrap: {}, streaming: true, streamUrl: server.url };
-      const client = LDClient.initializeInMain(envName, user, config);
-      client.on('change:flag', value => {
-        expect(value).toEqual('yes');
-        server.close(done);
-      });
-    });
+    const config = { bootstrap: {}, streaming: true, streamUrl: server.url };
+    const client = LDClient.initializeInMain(envName, user, config);
+    const changedFlag = new Promise(resolve => client.on('change:flag', resolve));
+    const value = await changedFlag;
+    expect(value).toEqual('yes');
   });
 
-  it('makes REPORT request and receives an event', done => {
-    httpServer.createServer((err, server) => {
-      err && done.fail(err);
+  it('makes REPORT request and receives an event', async () => {
+    const server = await httpServer.createServer();
 
-      server.on('request', (req, res) => {
-        expect(req.url).toEqual(expectedReportUrl);
-        expect(req.method).toEqual('REPORT');
-        readAll(req, body => {
-          expect(body).toEqual(JSON.stringify(user));
+    server.on('request', (req, res) => {
+      expect(req.url).toEqual(expectedReportUrl);
+      expect(req.method).toEqual('REPORT');
+      httpServer.readAll(req).then(body => {
+        expect(body).toEqual(JSON.stringify(user));
 
-          writeStream(res, { flag: { value: 'yes', version: 1 } });
-        });
-      });
-
-      const config = { bootstrap: {}, streaming: true, streamUrl: server.url, useReport: true };
-      const client = LDClient.initializeInMain(envName, user, config);
-      client.on('change:flag', value => {
-        expect(value).toEqual('yes');
-        server.close(done);
+        httpServer.respondSSEEvent(res, 'put', { flag: { value: 'yes', version: 1 } });
       });
     });
+
+    const config = { bootstrap: {}, streaming: true, streamUrl: server.url, useReport: true };
+    const client = LDClient.initializeInMain(envName, user, config);
+    const changedFlag = new Promise(resolve => client.on('change:flag', resolve));
+    const value = await changedFlag;
+    expect(value).toEqual('yes');
   });
 });

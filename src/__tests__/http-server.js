@@ -1,17 +1,20 @@
-import * as http from 'http';
+const http = require('http');
+const https = require('https');
 
 // This is adapted from some helper code in https://github.com/EventSource/eventsource/blob/master/test/eventsource_test.js
 
-let nextPort = 20000;
+let nextPort = 8000;
 let servers = [];
 
-export function createServer(callback) {
-  const server = http.createServer();
-  const port = nextPort++;
+export async function createServer(secure, options) {
+  const server = secure ? https.createServer(options) : http.createServer(options);
+  let port = nextPort++;
 
+  server.requests = [];
   const responses = [];
 
   server.on('request', (req, res) => {
+    server.requests.push(req);
     responses.push(res);
   });
 
@@ -21,14 +24,61 @@ export function createServer(callback) {
     realClose.call(server, callback);
   };
 
-  server.url = 'http://localhost:' + port;
-
   servers.push(server);
 
-  server.listen(port, err => callback(err, server));
+  while (true) {
+    try {
+      await new Promise((resolve, reject) => {
+        server.listen(port);
+        server.on('error', reject);
+        server.on('listening', resolve);
+      });
+      server.url = (secure ? 'https' : 'http') + '://localhost:' + port;
+      return server;
+    } catch (err) {
+      if (err.message.match(/EADDRINUSE/)) {
+        port = nextPort++;
+      } else {
+        throw err;
+      }
+    }
+  }
 }
 
 export function closeServers() {
   servers.forEach(server => server.close());
   servers = [];
+}
+
+export function readAll(req) {
+  return new Promise(resolve => {
+    let body = '';
+    req.on('data', data => {
+      body += data;
+    });
+    req.on('end', () => resolve(body));
+  });
+}
+
+export function respond(res, status, headers, body) {
+  res.writeHead(status, headers);
+  body && res.write(body);
+  res.end();
+}
+
+export function respondJson(res, data) {
+  respond(res, 200, { 'Content-Type': 'application/json' }, JSON.stringify(data));
+}
+
+export function respondSSEEvent(res, eventType, eventData) {
+  respond(
+    res,
+    200,
+    { 'Content-Type': 'text/event-stream' },
+    'event: ' + eventType + '\ndata: ' + JSON.stringify(eventData) + '\n\n'
+  );
+}
+
+export function autoRespond(server, respondFn) {
+  server.on('request', (req, res) => respondFn(res));
 }

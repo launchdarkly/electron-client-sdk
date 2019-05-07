@@ -4,6 +4,7 @@ import * as winston from 'winston';
 import electronPlatform from './electronPlatform';
 import * as interprocessSync from './interprocessSync';
 import * as nodeSdkEmulation from './nodeSdkEmulation';
+import * as packageJson from '../package.json';
 
 // This creates an SDK instance to be used in the main process of Electron. It can be used
 // either by itself or in combination with SDK instances in renderer windows (created with
@@ -31,8 +32,6 @@ export function initializeInMain(env, user, options = {}) {
     tracker.changedUser(user);
     return realIdentify(user, hash, cb);
   };
-
-  client.close = () => clientVars.stop();
 
   // This method is probably not of much use in Electron since we have a better way to send flag
   // data to the front end, but it exists in all the server-side SDKs so why not.
@@ -76,7 +75,7 @@ export const createNodeSdkAdapter = nodeSdkEmulation.createNodeSdkAdapter;
 
 export const createConsoleLogger = common.createConsoleLogger;
 
-export const version = common.version;
+export const version = packageJson.version;
 
 // This is called remotely by stateProvider.getInitialState()
 export function getInternalClientState(optionalEnv) {
