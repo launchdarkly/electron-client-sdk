@@ -1,9 +1,9 @@
-import * as storage from 'electron-json-storage';
-import { EventSource } from 'launchdarkly-eventsource';
-import newHttpRequest from './httpRequest';
-import * as packageJson from '../package.json';
+const storage = require('electron-json-storage');
+const { EventSource } = require('launchdarkly-eventsource');
+const newHttpRequest = require('./httpRequest');
+const packageJson = require('../package.json');
 
-export default function makeElectronPlatform(options) {
+function makeElectronPlatform(options) {
   const tlsParams = filterTlsParams(options && options.tlsParams);
 
   const ret = {};
@@ -53,3 +53,5 @@ function filterTlsParams(tlsParams) {
     .filter(key => httpsOptions.includes(key))
     .reduce((obj, key) => Object.assign({}, obj, { [key]: input[key] }), {});
 }
+
+module.exports = makeElectronPlatform;
