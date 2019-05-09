@@ -1,5 +1,5 @@
-const browserClient = require('ldclient-js');
-const common = require('ldclient-js-common');
+const browserClient = require('launchdarkly-js-client-sdk');
+const common = require('launchdarkly-js-sdk-common');
 const winston = require('winston');
 const electronPlatform = require('./electronPlatform');
 const interprocessSync = require('./interprocessSync');

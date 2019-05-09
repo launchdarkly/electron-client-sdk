@@ -1,4 +1,4 @@
-const common = require('ldclient-js-common');
+const common = require('launchdarkly-js-sdk-common');
 
 // This simply wraps the regular Electron client in an API that is more like the Node SDK, to assist
 // developers who are transitioning from the Node SDK.
