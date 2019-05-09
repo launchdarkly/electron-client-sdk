@@ -8,3 +8,4 @@ dist
 .idea
 .vscode/
 docs/build/
+test-types.js
