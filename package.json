@@ -1,6 +1,6 @@
 {
   "name": "ldclient-electron",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "LaunchDarkly SDK for Electron",
   "author": "LaunchDarkly <team@launchdarkly.com>",
   "license": "Apache-2.0",
