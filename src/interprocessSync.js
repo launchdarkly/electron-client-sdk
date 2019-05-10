@@ -16,7 +16,7 @@ function eventName(name, env) {
   return name + ':' + env;
 }
 
-export function createMainProcessClientStateTracker(env, user, logger) {
+function createMainProcessClientStateTracker(env, user, logger) {
   const state = {
     environment: env,
     user: user,
@@ -73,7 +73,7 @@ export function createMainProcessClientStateTracker(env, user, logger) {
   return t;
 }
 
-export function getMainProcessClientStateTracker(env) {
+function getMainProcessClientStateTracker(env) {
   if (env) {
     return stateTrackers[env];
   }
@@ -84,7 +84,7 @@ export function getMainProcessClientStateTracker(env) {
   return null;
 }
 
-export function createStateProviderForRendererClient(initialEnv) {
+function createStateProviderForRendererClient(initialEnv) {
   const sp = new EventEmitter();
 
   let initialState = electron.remote.require('ldclient-electron').getInternalClientState(initialEnv);
@@ -118,3 +118,9 @@ export function createStateProviderForRendererClient(initialEnv) {
 
   return sp;
 }
+
+module.exports = {
+  createMainProcessClientStateTracker: createMainProcessClientStateTracker,
+  getMainProcessClientStateTracker: getMainProcessClientStateTracker,
+  createStateProviderForRendererClient: createStateProviderForRendererClient,
+};

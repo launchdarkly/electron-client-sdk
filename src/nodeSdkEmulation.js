@@ -1,4 +1,4 @@
-import * as common from 'ldclient-js-common';
+const common = require('launchdarkly-js-sdk-common');
 
 // This simply wraps the regular Electron client in an API that is more like the Node SDK, to assist
 // developers who are transitioning from the Node SDK.
@@ -7,7 +7,7 @@ import * as common from 'ldclient-js-common';
 // have to call identify() prior to every flag evaluation. Therefore, this will perform very poorly
 // if for some reason you try to evaluate flags for a bunch of different users.
 
-export function createNodeSdkAdapter(realClient) {
+function createNodeSdkAdapter(realClient) {
   let initComplete = false;
 
   realClient.on('ready', () => {
@@ -72,3 +72,7 @@ export function createNodeSdkAdapter(realClient) {
 
   return wrapper;
 }
+
+module.exports = {
+  createNodeSdkAdapter: createNodeSdkAdapter,
+};

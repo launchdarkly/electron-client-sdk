@@ -2,7 +2,7 @@ import * as httpServer from './http-server';
 
 import * as LDClient from '../index';
 
-// Unlike the LDClient-streaming-test.js in ldclient-js-common, which tests the client streaming logic
+// Unlike the LDClient-streaming-test.js in launchdarkly-js-sdk-common, which tests the client streaming logic
 // against a mock EventSource, this does end-to-end testing against an embedded HTTP server to verify
 // that the EventSource implementation we're using in Electron basically works.
 

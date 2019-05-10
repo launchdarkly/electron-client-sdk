@@ -10,7 +10,7 @@
 declare module 'ldclient-electron' {
 
 //// DOCBUILD-START-REPLACE  (see docs/Makefile)
-  export * from 'ldclient-js-common';
+  export * from 'launchdarkly-js-sdk-common';
 
   import {
     LDEvaluationDetail,
@@ -20,7 +20,7 @@ declare module 'ldclient-electron' {
     LDClientBase,
     LDOptionsBase,
     LDUser
-  } from 'ldclient-js-common';
+  } from 'launchdarkly-js-sdk-common';
 //// DOCBUILD-END-REPLACE
 
   /**

@@ -1,15 +1,15 @@
-import * as browserClient from 'ldclient-js';
-import * as common from 'ldclient-js-common';
-import * as winston from 'winston';
-import electronPlatform from './electronPlatform';
-import * as interprocessSync from './interprocessSync';
-import * as nodeSdkEmulation from './nodeSdkEmulation';
-import * as packageJson from '../package.json';
+const browserClient = require('launchdarkly-js-client-sdk');
+const common = require('launchdarkly-js-sdk-common');
+const winston = require('winston');
+const electronPlatform = require('./electronPlatform');
+const interprocessSync = require('./interprocessSync');
+const nodeSdkEmulation = require('./nodeSdkEmulation');
+const packageJson = require('../package.json');
 
 // This creates an SDK instance to be used in the main process of Electron. It can be used
 // either by itself or in combination with SDK instances in renderer windows (created with
 // initializeRenderer).
-export function initializeInMain(env, user, options = {}) {
+function initializeInMain(env, user, options = {}) {
   // Pass our platform object to the common code to create the Electron version of the client
   const platform = electronPlatform(options);
   const extraDefaults = {};
@@ -55,7 +55,7 @@ export function initializeInMain(env, user, options = {}) {
   return clientVars.client;
 }
 
-export function initializeInRenderer(optionalEnv, options = {}) {
+function initializeInRenderer(optionalEnv, options = {}) {
   let env;
   let config;
   if (optionalEnv === Object(optionalEnv)) {
@@ -71,14 +71,8 @@ export function initializeInRenderer(optionalEnv, options = {}) {
   return browserClient.initialize(env, null, config);
 }
 
-export const createNodeSdkAdapter = nodeSdkEmulation.createNodeSdkAdapter;
-
-export const createConsoleLogger = common.createConsoleLogger;
-
-export const version = packageJson.version;
-
 // This is called remotely by stateProvider.getInitialState()
-export function getInternalClientState(optionalEnv) {
+function getInternalClientState(optionalEnv) {
   const t = interprocessSync.getMainProcessClientStateTracker(optionalEnv);
   return t ? t.getInitedState() : null;
 }
@@ -93,3 +87,12 @@ function createDefaultLogger() {
     ],
   });
 }
+
+module.exports = {
+  initializeInMain: initializeInMain,
+  initializeInRenderer: initializeInRenderer,
+  createNodeSdkAdapter: nodeSdkEmulation.createNodeSdkAdapter,
+  createConsoleLogger: common.createConsoleLogger,
+  version: packageJson.version,
+  getInternalClientState: getInternalClientState,
+};
