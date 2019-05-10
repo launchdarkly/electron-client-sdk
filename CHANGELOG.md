@@ -2,6 +2,25 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file.
 
+## [1.1.1] - 2019-05-10
+
+**_Note: this is a replacement for the 1.1.0 release, which was broken and has been removed._**
+
+### Added:
+- Generated TypeDoc documentation for all types, properties, and methods is now available online at [https://launchdarkly.github.io/electron-client-sdk/](https://launchdarkly.github.io/electron-client-sdk/). Currently this will only be for the latest released version.
+- The SDK now allows you to specify an anonymous user without a key (i.e. the `anonymous` property is `true`, and there is no `key` property). In that case, the SDK will generate a UUID and send that as the user key. It will also cache this generated key in local storage so that anonymous users will always get the same key when running under the same user account in the operating system.
+- It is now possible to specify any of the TLS configuration parameters supported by Node's `https.request()` in the client configuration, so that they will apply to all HTTPS requests made by the SDK. In your client options, add a property called `tlsParams` whose value is an object containing those parameters, e.g. `tlsParams: { ca: 'my trusted CA certificate data' }`.
+
+### Fixed:
+- The `version` constant was incorrectly reporting the version string of the core JavaScript SDK package that is used internally. It is now the version string of the Electron SDK.
+- Setting user attributes to non-string values when a string was expected would prevent evaluations and analytics events from working. The SDK will now convert attribute values to strings as needed.
+
+# Note on future releases
+
+The LaunchDarkly SDK repositories are being renamed for consistency. This repository is now `electron-client-sdk` rather than `electron-client`.
+
+The package name will also change. In the 1.1.1 release, it is still `ldclient-electron`; in all future releases, it will be `launchdarkly-electron-client-sdk`. No further updates to the `ldclient-electron` package will be published after this release.
+
 ## [1.0.1] - 2019-03-25
 ### Fixed:
 - Improved TypeScript documentation comments throughout. This is the only change in the `ldclient-electron` package. However, the following fixes were made in the 2.9.5 release of `ldclient-js-common` (which will be picked up automatically by `ldclient-electron` even if you are using the previous release, since its dependency version is "^2.9.0"):
