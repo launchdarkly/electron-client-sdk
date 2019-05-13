@@ -1,5 +1,5 @@
 {
-  "name": "ldclient-electron",
+  "name": "launchdarkly-electron-client-sdk",
   "version": "1.1.1",
   "description": "LaunchDarkly SDK for Electron",
   "author": "LaunchDarkly <team@launchdarkly.com>",

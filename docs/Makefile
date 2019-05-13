@@ -1,12 +1,12 @@
 
-# The TypeDoc build for ldclient-electron is more complicated than for ldclient-node because ldclient-electron
+# The TypeDoc build for launchdarkly-electron-client-sdk is more complicated than for the Node SDK because it
 # takes some of its types from launchdarkly-js-sdk-common. TypeDoc unfortunately does not understand the directive
 # "export * from 'launchdarkly-js-sdk-common'" - so, by default, even though it does see the common types (like
 # LDUser), it will not include them in the output.
 #
 # The current solution is to run TypeDoc on a hacked-together file that puts all of the types directly
 # into one package. The sed commands below create this temporary declaration file by taking the types file
-# from ldclient-electron and replacing the launchdarkly-js-sdk-common imports with the actual contents of the
+# from the Electron SDK and replacing the launchdarkly-js-sdk-common imports with the actual contents of the
 # launchdarkly-js-sdk-common module. We then run TypeDoc from the docs directory, which contains its own
 # tsconfig.json that points to the temporarily file instead of the original files.
 #
