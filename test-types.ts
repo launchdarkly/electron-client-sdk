@@ -13,7 +13,7 @@ import {
 	LDUser,
   initializeInMain,
 	initializeInRenderer
-} from 'ldclient-electron';
+} from 'launchdarkly-electron-client-sdk';
 
 var emptyOptions: LDOptions = {};
 var logger: LDLogger = createConsoleLogger("info");

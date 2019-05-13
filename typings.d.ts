@@ -7,7 +7,7 @@
  *
  * For more information, see the [SDK reference guide](http://docs.launchdarkly.com/docs/electron-sdk-reference).
  */
-declare module 'ldclient-electron' {
+declare module 'launchdarkly-electron-client-sdk' {
 
 //// DOCBUILD-START-REPLACE  (see docs/Makefile)
   export * from 'launchdarkly-js-sdk-common';
