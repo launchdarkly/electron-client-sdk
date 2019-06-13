@@ -2,6 +2,10 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.1.3] - 2019-06-13
+### Fixed:
+- The `initializeInRenderer` method was broken in the 1.1.2 release, as a side effect of renaming the SDK package. This has been fixed.
+
 ## [1.1.2] - 2019-05-13
 ### Changed:
 - Changed the package name from `ldclient-electron` to `launchdarkly-electron-client-sdk`.
