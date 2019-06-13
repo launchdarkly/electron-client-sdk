@@ -8,7 +8,6 @@ All notable changes to the LaunchDarkly Electron SDK will be documented in this 
  
 There are no other changes in this release. Substituting `ldclient-electron` version 1.1.1 with `launchdarkly-electron-client-sdk` version 1.1.2 (and updating any `require` or `import` lines that referred to the old package name) will not affect functionality.
 
-
 ## [1.1.1] - 2019-05-10
 
 **_Note: this is a replacement for the 1.1.0 release, which was broken and has been removed._**

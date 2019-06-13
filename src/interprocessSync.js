@@ -87,7 +87,7 @@ function getMainProcessClientStateTracker(env) {
 function createStateProviderForRendererClient(initialEnv) {
   const sp = new EventEmitter();
 
-  let initialState = electron.remote.require('ldclient-electron').getInternalClientState(initialEnv);
+  let initialState = electron.remote.require('launchdarkly-electron-client-sdk').getInternalClientState(initialEnv);
   let currentEnv = (initialState && initialState.environment) || initialEnv;
 
   sp.getInitialState = () => initialState;
