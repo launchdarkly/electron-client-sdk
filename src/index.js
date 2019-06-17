@@ -60,6 +60,7 @@ function initializeInRenderer(optionalEnv, options = {}) {
   let config;
   if (optionalEnv === Object(optionalEnv)) {
     config = optionalEnv;
+    optionalEnv = null;
   } else {
     env = optionalEnv;
     config = options;
