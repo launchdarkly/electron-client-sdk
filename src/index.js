@@ -60,13 +60,15 @@ function initializeInRenderer(optionalEnv, options = {}) {
   let config;
   if (optionalEnv === Object(optionalEnv)) {
     config = optionalEnv;
+    env = null;
   } else {
     env = optionalEnv;
     config = options;
   }
   config = Object.assign({}, config, {
-    stateProvider: interprocessSync.createStateProviderForRendererClient(optionalEnv),
+    stateProvider: interprocessSync.createStateProviderForRendererClient(env),
     streaming: false, // don't want the renderer client to open a stream if someone subscribes to change events
+    fetchGoals: false, // click/pageview goals aren't supported in Electron
   });
   return browserClient.initialize(env, null, config);
 }
