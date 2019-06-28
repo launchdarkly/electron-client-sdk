@@ -54,8 +54,8 @@
   "dependencies": {
     "electron-json-storage": "^4.1",
     "launchdarkly-eventsource": "1.0.0",
-    "launchdarkly-js-client-sdk": "2.10.3",
-    "launchdarkly-js-sdk-common": "2.10.3",
+    "launchdarkly-js-client-sdk": "2.12.1",
+    "launchdarkly-js-sdk-common": "2.12.1",
     "original": "^1.0.0",
     "winston": "^2.4"
   },
