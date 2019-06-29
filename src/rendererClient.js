@@ -12,7 +12,7 @@ function initializeInRenderer(optionalEnv, options = {}) {
     env = optionalEnv;
     config = options;
   }
-  let initialState = getMainEntryPoints().getInternalClientState(env);
+  const initialState = getMainEntryPoints().getInternalClientState(env);
   config = Object.assign({}, config, {
     stateProvider: interprocessSync.createStateProviderForRendererClient(env, initialState),
     streaming: false, // don't want the renderer client to open a stream if someone subscribes to change events

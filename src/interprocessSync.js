@@ -87,8 +87,9 @@ function getMainProcessClientStateTracker(env) {
 // This is the only function in this file that is executed in the renderer process, rather than the
 // main process. It is in this file so that it can use shared things like the event name constants,
 // but it does not have access to the stateTrackers data structure which is in the main process.
-function createStateProviderForRendererClient(initialEnv, initialState) {
+function createStateProviderForRendererClient(initialEnv, optionalInitialState) {
   const sp = new EventEmitter();
+  const initialState = optionalInitialState;
 
   let currentEnv = (initialState && initialState.environment) || initialEnv;
 

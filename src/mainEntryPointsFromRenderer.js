@@ -17,6 +17,6 @@ function getInternalAppPath() {
 }
 
 module.exports = {
-	getInternalClientState: getInternalClientState,
-	getInternalAppPath: getInternalAppPath,
+  getInternalClientState: getInternalClientState,
+  getInternalAppPath: getInternalAppPath,
 };
