@@ -1,9 +1,9 @@
-const browserClient = require('launchdarkly-js-client-sdk');
 const common = require('launchdarkly-js-sdk-common');
 const winston = require('winston');
 const electronPlatform = require('./electronPlatform');
 const interprocessSync = require('./interprocessSync');
 const nodeSdkEmulation = require('./nodeSdkEmulation');
+const rendererClient = require('./rendererClient');
 const packageJson = require('../package.json');
 
 // This creates an SDK instance to be used in the main process of Electron. It can be used
@@ -55,30 +55,6 @@ function initializeInMain(env, user, options = {}) {
   return clientVars.client;
 }
 
-function initializeInRenderer(optionalEnv, options = {}) {
-  let env;
-  let config;
-  if (optionalEnv === Object(optionalEnv)) {
-    config = optionalEnv;
-    env = null;
-  } else {
-    env = optionalEnv;
-    config = options;
-  }
-  config = Object.assign({}, config, {
-    stateProvider: interprocessSync.createStateProviderForRendererClient(env),
-    streaming: false, // don't want the renderer client to open a stream if someone subscribes to change events
-    fetchGoals: false, // click/pageview goals aren't supported in Electron
-  });
-  return browserClient.initialize(env, null, config);
-}
-
-// This is called remotely by stateProvider.getInitialState()
-function getInternalClientState(optionalEnv) {
-  const t = interprocessSync.getMainProcessClientStateTracker(optionalEnv);
-  return t ? t.getInitedState() : null;
-}
-
 function createDefaultLogger() {
   return new winston.Logger({
     level: 'warn',
@@ -92,9 +68,8 @@ function createDefaultLogger() {
 
 module.exports = {
   initializeInMain: initializeInMain,
-  initializeInRenderer: initializeInRenderer,
+  initializeInRenderer: rendererClient.initializeInRenderer,
   createNodeSdkAdapter: nodeSdkEmulation.createNodeSdkAdapter,
   createConsoleLogger: common.createConsoleLogger,
   version: packageJson.version,
-  getInternalClientState: getInternalClientState,
 };
