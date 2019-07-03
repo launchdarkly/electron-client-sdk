@@ -13,7 +13,7 @@ function getInternalClientState(optionalEnv) {
 }
 
 function getInternalAppPath() {
-  return electron.app.getAppPath(); // electron.app.getAppPath() only exists in the main proceas
+  return electron.app.getAppPath(); // electron.app.getAppPath() only exists in the main process
 }
 
 module.exports = {
