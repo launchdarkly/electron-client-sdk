@@ -23,6 +23,7 @@
     "test": "NODE_ENV=test jest",
     "test:junit": "NODE_ENV=test jest --testResultsProcessor jest-junit",
     "integration-test": "NODE_ENV=test jest --config src/__tests__/rendererIntegrationTests/jest.config.js src/__tests__/rendererIntegrationTests/renderer-integrationtest.js",
+    "integration-test:junit": "NODE_ENV=test jest --config src/__tests__/rendererIntegrationTests/jest.config.js src/__tests__/rendererIntegrationTests/renderer-integrationtest.js --testResultsProcessor jest-junit",
     "check-typescript": "node_modules/typescript/bin/tsc",
     "clean": "rimraf dist/**"
   },

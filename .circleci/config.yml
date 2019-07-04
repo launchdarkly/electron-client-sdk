@@ -24,8 +24,9 @@ jobs:
             DISPLAY: ":99.0"  # so Electron will use xvfb
 
       - run:
-          command: npm run integration-test
+          command: npm run integration-test:junit
           environment:
+            JEST_JUNIT_OUTPUT: "./reports/junit/js-integration-test-results.xml"
             DISPLAY: ":99.0"
 
       - run: npm run check-typescript
