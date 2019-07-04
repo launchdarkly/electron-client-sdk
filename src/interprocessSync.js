@@ -89,7 +89,7 @@ function getMainProcessClientStateTracker(env) {
 // but it does not have access to the stateTrackers data structure which is in the main process.
 function createStateProviderForRendererClient(initialEnv, optionalInitialState) {
   const sp = new EventEmitter();
-  const initialState = optionalInitialState;
+  let initialState = optionalInitialState;
 
   let currentEnv = (initialState && initialState.environment) || initialEnv;
 

@@ -64,10 +64,6 @@ function testAppClient(fakeLD, baseOptions) {
   };
 
   me.close = async () => {
-    if (options.dumpLogs) {
-      const logs = await app.client.getMainProcessLogs();
-      console.log(logs.join('\n'));
-    }
     if (app.isRunning()) {
       await app.stop();
     }
@@ -95,6 +91,8 @@ function testAppClient(fakeLD, baseOptions) {
     const output = await getClientOutput(index);
     return output.flags;
   };
+
+  me.getLogs = async () => await app.client.getMainProcessLogs();
 
   return me;
 }
