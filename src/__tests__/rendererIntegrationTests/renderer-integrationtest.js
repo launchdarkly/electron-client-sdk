@@ -158,4 +158,24 @@ describe('full application integration tests', () => {
 
     await expect(app.getClientFlags(0)).resolves.toEqual({ flag: 'third' });
   });
+
+  doTest('receives custom event from renderer client', async (fakeLD, app) => {
+    const env = fakeLD.addEnvironment(defaultEnvId);
+    env.addUser(defaultUserKey, {});
+    await app.start();
+
+    await app.triggerCustomEvent(0);
+
+    while (true) {
+      const e = await env.nextEvent();
+      if (e.kind === 'custom') {
+        expect(e.key).toEqual('my-event');
+        expect(e.userKey).toEqual(defaultUserKey);
+        // Normally we'd check e.url here too (it should refer to testAppWindow.html), but due to the way that
+        // Spectron launches Electron, the application root path won't point to this directory and so the URL
+        // logic will not work.
+        break;
+      }
+    }
+  });
 });

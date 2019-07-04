@@ -80,6 +80,11 @@ function testAppClient(fakeLD, baseOptions) {
     await app.client.click('#set-user');
   };
 
+  // Causes a renderer client to send a custom event
+  me.triggerCustomEvent = async index => {
+    await app.client.click('#event' + (index || 0));
+  };
+
   // Returns the current front-end user key - specify index if there are multiple clients
   me.getClientUserKey = async index => {
     const output = await getClientOutput(index);

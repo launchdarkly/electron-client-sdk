@@ -23,7 +23,11 @@ const allClientsDiv = document.getElementById('test-clients');
 function startClient(index, env) {
   const clientDiv = document.createElement('div');
   clientDiv.id = 'client' + index;
-  clientDiv.innerHTML = `client [${index}] environment [${env}]: `;
+  clientDiv.innerHTML = `client [${index}] environment [${env}] `;
+  const eventButton = document.createElement('button');
+  eventButton.id = 'event' + index;
+  eventButton.innerHTML = 'send event';
+  clientDiv.append(eventButton);
   const statusElement = document.createElement('span');
   statusElement.id = 'status' + index;
   statusElement.innerHTML = 'waiting...';
@@ -63,6 +67,10 @@ function startClient(index, env) {
 
   client.on('change', updateFlagValues);
   client.on('ready', updateFlagValues);
+
+  eventButton.addEventListener('click', () => {
+    client.track('my-event');
+  });
 }
 
 for (const i in ldTestConfig.envIds) {
