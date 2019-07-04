@@ -38,7 +38,7 @@ describe('full application integration tests', () => {
         try {
           await fn(fakeLD, app);
         } catch (e) {
-          const logs = await app.dumpLogs();
+          const logs = await app.getLogs();
           console.log('*** console output from Electron app follows ***\n' + logs.join('\n'));
           throw e;
         } finally {
