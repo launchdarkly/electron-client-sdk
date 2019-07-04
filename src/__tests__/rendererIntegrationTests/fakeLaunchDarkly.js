@@ -48,6 +48,8 @@ async function fakeLaunchDarkly() {
     };
 
     server.on('request', (req, res) => {
+      // Note that we're assuming the client will use REPORT mode, because parsing the user properties
+      // out of the URL is a pain.
       if (req.url === '/sdk/evalx/' + envId + '/user') {
         forUser(req, u => {
           httpServer.respondJson(res, u.flags);
@@ -57,8 +59,7 @@ async function fakeLaunchDarkly() {
           res.writeHead(200, { 'Content-Type': 'text/event-stream' });
           pipeStreamToResponse(u.stream, res);
         });
-      }
-      if (req.url === '/events/bulk/' + envId) {
+      } else if (req.url === '/events/bulk/' + envId) {
         res.writeHead(202);
         httpServer.readAll(req).then(body => {
           events.addAll(JSON.parse(body));
