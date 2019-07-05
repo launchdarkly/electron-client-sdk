@@ -8,7 +8,7 @@ describe('full application integration tests', () => {
   const sdkSymlinkPath = path.join(projectRoot, 'node_modules', 'launchdarkly-electron-client-sdk');
   const defaultUserKey = 'default-user';
   const defaultEnvId = 'fake-env';
-  const timeout = 5000; // jest default is 5000; Electron might be slow to start up
+  const timeout = 10000; // jest default is 5000; Electron might be slow to start up
 
   beforeEach(async () => {
     // Some of the interactions between the renderer client and the main client will only work if the SDK
