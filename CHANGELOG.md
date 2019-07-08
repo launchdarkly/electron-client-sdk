@@ -2,6 +2,18 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.1.4] - 2019-07-08
+### Added:
+- The SDK now logs a message at `info` level when the stream connection is started or stopped. It also logs a message at `warn` level if it detects that the stream had to be restarted due to a connection failure.
+- The CI build now includes integration tests of an entire Electron application, so front-end behavior now has test coverage.
+
+### Fixed:
+- The SDK failed to restart a streaming connection if it had already been dropped and restarted before.
+- Renderer windows were making HTTP requests to LaunchDarkly for goals data. This was unnecessary because click and pageview goals currently do not work in Electron (due to the fact that LaunchDarkly expects them to have web URLs). Therefore these requests have been turned off.
+- When calling `track()` to create a custom analytics event from a renderer window, the `url` property in the event was being set to the value of `window.location.href`, which in Electron is a file URL that starts with the absolute path of the application. Since that is dependent on where the user happened to install the application, it's not useful for analytics where you just want to know what page/window the event came from. This has been changed to a relative file path within the  application, such as `/static/main.html`.
+- Calling `initializeInRenderer` with an `options` object and no `environment` parameter could cause flags not to load.
+- Calling `initializeInRenderer` with no `environment` parameter could cause a confusing error message in the console ("Error fetching flags: 200").
+
 ## [1.1.3] - 2019-06-13
 ### Fixed:
 - The `initializeInRenderer` method was broken in the 1.1.2 release, as a side effect of renaming the SDK package. This has been fixed.
