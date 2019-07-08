@@ -22,13 +22,15 @@
     "format:test:js": "prettier --ignore-path ../../.prettierignore --list-different 'src/**/*.js'",
     "test": "NODE_ENV=test jest",
     "test:junit": "NODE_ENV=test jest --testResultsProcessor jest-junit",
+    "integration-test": "NODE_ENV=test jest --config src/__tests__/rendererIntegrationTests/jest.config.js src/__tests__/rendererIntegrationTests/renderer-integrationtest.js",
+    "integration-test:junit": "NODE_ENV=test jest --config src/__tests__/rendererIntegrationTests/jest.config.js src/__tests__/rendererIntegrationTests/renderer-integrationtest.js --testResultsProcessor jest-junit",
     "check-typescript": "node_modules/typescript/bin/tsc",
     "clean": "rimraf dist/**"
   },
   "devDependencies": {
-    "@jest-runner/electron": "1.1.1",
     "@babel/core": "7.4.3",
     "@babel/preset-env": "7.4.3",
+    "@jest-runner/electron": "1.1.1",
     "babel-eslint": "10.0.1",
     "babel-jest": "24.7.1",
     "chai": "4.1.2",
@@ -48,14 +50,15 @@
     "rimraf": "2.6.2",
     "semver": "5.5.0",
     "semver-compare": "1.0.0",
+    "spectron": "^4.0.0",
     "typedoc": "0.14.2",
     "typescript": "3.0.1"
   },
   "dependencies": {
     "electron-json-storage": "^4.1",
     "launchdarkly-eventsource": "1.0.0",
-    "launchdarkly-js-client-sdk": "2.10.3",
-    "launchdarkly-js-sdk-common": "2.10.3",
+    "launchdarkly-js-client-sdk": "2.12.3",
+    "launchdarkly-js-sdk-common": "2.12.3",
     "original": "^1.0.0",
     "winston": "^2.4"
   },

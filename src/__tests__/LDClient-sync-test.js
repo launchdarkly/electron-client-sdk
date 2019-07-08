@@ -1,4 +1,5 @@
 import * as LDClient from '../index';
+import * as mainEntryPointsFromRenderer from '../mainEntryPointsFromRenderer';
 
 // These tests cover the mechanisms by which the main-process client and renderer-process clients are
 // kept in sync. However, in the current test framework it's not possible to actually create any
@@ -22,18 +23,18 @@ describe('interprocess sync', () => {
 
   describe('getInternalClientState', () => {
     it('returns null if no main client exists yet', () => {
-      expect(LDClient.getInternalClientState(envName)).toBe(null);
+      expect(mainEntryPointsFromRenderer.getInternalClientState(envName)).toBe(null);
     });
 
     it('returns null if a client exists but is not ready yet', () => {
       LDClient.initializeInMain(envName, user, { baseUrl: 'http://bad' });
-      expect(LDClient.getInternalClientState(envName)).toBe(null);
+      expect(mainEntryPointsFromRenderer.getInternalClientState(envName)).toBe(null);
     });
 
     it('returns state if client is ready', done => {
       const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap });
       client.waitForInitialization().then(() => {
-        expect(LDClient.getInternalClientState(envName)).toEqual(expectedState);
+        expect(mainEntryPointsFromRenderer.getInternalClientState(envName)).toEqual(expectedState);
         done();
       });
     });
@@ -41,7 +42,7 @@ describe('interprocess sync', () => {
     it('if environment is unspecified and there is only one client, uses that one', done => {
       const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap });
       client.waitForInitialization().then(() => {
-        expect(LDClient.getInternalClientState()).toEqual(expectedState);
+        expect(mainEntryPointsFromRenderer.getInternalClientState()).toEqual(expectedState);
         done();
       });
     });
@@ -51,7 +52,7 @@ describe('interprocess sync', () => {
       const client2 = LDClient.initializeInMain(envName + '2', user, { bootstrap: bootstrap, sendEvents: false });
       client1.waitForInitialization().then(() => {
         client2.waitForInitialization().then(() => {
-          expect(LDClient.getInternalClientState()).toBe(null);
+          expect(mainEntryPointsFromRenderer.getInternalClientState()).toBe(null);
           done();
         });
       });
