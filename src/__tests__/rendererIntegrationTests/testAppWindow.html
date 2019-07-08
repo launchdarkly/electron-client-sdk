@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>LaunchDarkly Electron SDK integration test</title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 8px;
+      }
+      h2 {
+        background: #ddf;
+        margin: -8px -8px 20px -8px;
+        padding: 8px;
+      }
+      #test-clients {
+        margin-top: 12px;
+      }
+      #test-clients >div {
+        border-top: 1px solid black;
+        padding: 8px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 id="test-title"></h2>
+    
+    <div>
+      user: <input type="text" id="user" value=""> <button id="set-user">change</button>
+    </div>
+    
+    <div id="test-clients">
+    </div>
+
+    <script>
+      require('./testAppWindow.js')
+    </script>
+  </body>
+</html>

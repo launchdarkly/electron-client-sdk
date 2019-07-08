@@ -34,6 +34,12 @@ To run all unit tests:
 npm test
 ```
 
+To run the integration tests that start a full Electron application to verify front-end behavior:
+
+```
+npm run integration-test
+```
+
 To verify that the TypeScript declarations compile correctly (this involves compiling the file `test-types.ts`, so if you have changed any types or interfaces, you will want to update that code):
 
 ```
