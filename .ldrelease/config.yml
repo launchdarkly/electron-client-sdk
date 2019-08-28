@@ -1,0 +1,17 @@
+repo:
+  public: electron-client-sdk
+  private: electron-client-sdk-private
+
+publications:
+  - url: https://www.npmjs.com/package/launchdarkly-electron-client-sdk
+    description: npm
+
+template:
+  name: npm
+
+documentation:
+  githubPages: true
+  title: LaunchDarkly Electron SDK
+
+sdk:
+  displayName: "Electron"
