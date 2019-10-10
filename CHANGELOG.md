@@ -2,6 +2,15 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.2.0] - 2019-10-10
+### Added:
+- Added support for upcoming LaunchDarkly experimentation features. See `LDClient.track()`.
+- The `createConsoleLogger()` function now has an optional second parameter for customizing the log prefix.
+
+### Changed:
+- Log messages from `createConsoleLogger()` now include the level ("[warn]", "[error]", etc.) and have a prefix of "LD:" by default.
+
+
 ## [1.1.4] - 2019-07-08
 ### Added:
 - The SDK now logs a message at `info` level when the stream connection is started or stopped. It also logs a message at `warn` level if it detects that the stream had to be restarted due to a connection failure.
