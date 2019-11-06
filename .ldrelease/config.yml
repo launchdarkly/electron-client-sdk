@@ -8,6 +8,8 @@ publications:
 
 template:
   name: npm
+  skip:
+    - test  # running tests requires extra runtime libraries for Electron - they are run in CI anyway
 
 documentation:
   githubPages: true
