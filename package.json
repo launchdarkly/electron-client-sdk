@@ -51,7 +51,6 @@
     "semver": "5.5.0",
     "semver-compare": "1.0.0",
     "spectron": "^4.0.0",
-    "typedoc": "0.14.2",
     "typescript": "3.0.1"
   },
   "dependencies": {
