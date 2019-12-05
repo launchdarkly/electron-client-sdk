@@ -1,6 +1,8 @@
 import * as LDClient from '../index';
 import * as mainEntryPointsFromRenderer from '../mainEntryPointsFromRenderer';
 
+import { withCloseable } from 'launchdarkly-js-test-helpers';
+
 // These tests cover the mechanisms by which the main-process client and renderer-process clients are
 // kept in sync. However, in the current test framework it's not possible to actually create any
 // renderer processes, so the tests are just verifying that particular methods that are used in the
@@ -39,21 +41,22 @@ describe('interprocess sync', () => {
       });
     });
 
-    it('if environment is unspecified and there is only one client, uses that one', done => {
+    it('if environment is unspecified and there is only one client, uses that one', async () => {
       const client = LDClient.initializeInMain(envName, user, { bootstrap: bootstrap });
-      client.waitForInitialization().then(() => {
+      await withCloseable(client, async () => {
+        await client.waitForInitialization();
         expect(mainEntryPointsFromRenderer.getInternalClientState()).toEqual(expectedState);
-        done();
       });
     });
 
-    it('if environment is unspecified and there are multiple clients, returns null', done => {
+    it('if environment is unspecified and there are multiple clients, returns null', async () => {
       const client1 = LDClient.initializeInMain(envName, user, { bootstrap: {}, sendEvents: false });
-      const client2 = LDClient.initializeInMain(envName + '2', user, { bootstrap: bootstrap, sendEvents: false });
-      client1.waitForInitialization().then(() => {
-        client2.waitForInitialization().then(() => {
+      await withCloseable(client1, async () => {
+        const client2 = LDClient.initializeInMain(envName + '2', user, { bootstrap: bootstrap, sendEvents: false });
+        await withCloseable(client2, async () => {
+          await client1.waitForInitialization();
+          await client2.waitForInitialization();
           expect(mainEntryPointsFromRenderer.getInternalClientState()).toBe(null);
-          done();
         });
       });
     });
