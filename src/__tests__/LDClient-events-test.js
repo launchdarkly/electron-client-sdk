@@ -1,6 +1,6 @@
 import * as LDClient from '../index';
 
-import { withCloseable } from 'launchdarkly-js-test-helpers';
+const { TestHttpHandlers, TestHttpServers, withCloseable } = require('launchdarkly-js-test-helpers');
 
 describe('LDClient', () => {
   const envName = 'UNKNOWN_ENVIRONMENT_ID';
@@ -11,35 +11,53 @@ describe('LDClient', () => {
   // should.
 
   describe('event generation', () => {
-    function stubEventProcessor() {
-      const ep = { events: [] };
-      ep.start = function() {};
-      ep.flush = function() {};
-      ep.stop = function() {};
-      ep.enqueue = function(e) {
-        ep.events.push(e);
-      };
-      return ep;
-    }
-
     // This tests that the client calls our platform's getCurrentUrl() and isDoNotTrack() methods.
     it('sends an event for track()', async () => {
-      const ep = stubEventProcessor();
-      const client = LDClient.initializeInMain(envName, user, { eventProcessor: ep, bootstrap: {} });
-      await withCloseable(client, async () => {
-        await client.waitForInitialization();
+      await withCloseable(TestHttpServers.start, async server => {
+        const config = { bootstrap: {}, eventsUrl: server.url, diagnosticOptOut: true };
+        const client = LDClient.initializeInMain(envName, user, config);
+        await withCloseable(client, async () => {
+          const data = { thing: 'stuff' };
+          await client.waitForInitialization();
 
-        const data = { thing: 'stuff' };
+          client.track('eventkey', data);
+          await client.flush();
 
-        client.track('eventkey', data);
+          const req = await server.nextRequest();
+          expect(req.path).toEqual('/events/bulk/' + envName);
+          const events = JSON.parse(req.body);
+          expect(events.length).toEqual(2); // first is identify event
+          const trackEvent = events[1];
+          expect(trackEvent.kind).toEqual('custom');
+          expect(trackEvent.key).toEqual('eventkey');
+          expect(trackEvent.userKey).toEqual(user.key);
+          expect(trackEvent.data).toEqual(data);
+          expect(trackEvent.url).toEqual(null);
+        });
+      });
+    });
+  });
 
-        expect(ep.events.length).toEqual(2);
-        const trackEvent = ep.events[1];
-        expect(trackEvent.kind).toEqual('custom');
-        expect(trackEvent.key).toEqual('eventkey');
-        expect(trackEvent.user).toEqual(user);
-        expect(trackEvent.data).toEqual(data);
-        expect(trackEvent.url).toEqual(null);
+  describe('diagnostic events', () => {
+    it('sends diagnostic init event', async () => {
+      await withCloseable(TestHttpServers.start, async server => {
+        server.byDefault(TestHttpHandlers.respond(202));
+        const config = { bootstrap: {}, eventsUrl: server.url };
+        const client = LDClient.initializeInMain(envName, user, config);
+        await withCloseable(client, async () => {
+          const req = await server.nextRequest();
+          expect(req.path).toEqual('/events/diagnostic/' + envName);
+          const data = JSON.parse(req.body);
+          expect(data.kind).toEqual('diagnostic-init');
+          expect(data.platform).toMatchObject({
+            name: 'Electron',
+            electronVersion: process.versions.electron,
+            nodeVersion: process.versions.node,
+          });
+          expect(data.sdk).toMatchObject({
+            name: 'Electron',
+          });
+        });
       });
     });
   });

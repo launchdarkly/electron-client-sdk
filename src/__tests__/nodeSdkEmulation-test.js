@@ -30,6 +30,7 @@ describe('Node-style API wrapper', () => {
     const baseConfig = {
       baseUrl: server.url,
       eventsUrl: server.url,
+      diagnosticOptOut: true,
     };
     const client = LDClient.initializeInMain(envName, user, Object.assign(baseConfig, options));
     return await withCloseable(LDClient.createNodeSdkAdapter(client), asyncCallback);

@@ -1,3 +1,4 @@
+const os = require('os');
 const storage = require('electron-json-storage');
 const { EventSource } = require('launchdarkly-eventsource');
 const newHttpRequest = require('./httpRequest');
@@ -31,7 +32,35 @@ function makeElectronPlatform(options) {
   ret.userAgent = 'ElectronClient';
   ret.version = packageJson.version;
 
+  ret.diagnosticSdkData = {
+    name: 'Electron',
+    version: packageJson.version,
+  };
+
+  ret.diagnosticPlatformData = {
+    name: 'Electron',
+    electronVersion: process.versions.electron,
+    nodeVersion: process.versions.node,
+    osArch: os.arch(),
+    osName: normalizePlatformName(os.platform()),
+    osVersion: os.release(),
+  };
+
   return ret;
+}
+
+function normalizePlatformName(platformName) {
+  // The following logic is based on how Node.js reports the platform name
+  switch (platformName) {
+    case 'darwin':
+      return 'MacOS';
+    case 'win32':
+      return 'Windows';
+    case 'linux':
+      return 'Linux';
+    default:
+      return platformName;
+  }
 }
 
 const httpsOptions = [
