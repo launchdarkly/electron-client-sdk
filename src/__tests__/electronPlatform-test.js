@@ -28,7 +28,6 @@ describe('electronPlatform', () => {
         expect(req.path).toEqual(path);
         expect(req.headers['a']).toEqual('1');
         expect(req.headers['b']).toEqual('2');
-
       });
     });
 
