@@ -1,5 +1,7 @@
 import * as LDClient from '../index';
 
+import { withCloseable } from 'launchdarkly-js-test-helpers';
+
 describe('LDClient', () => {
   const envName = 'UNKNOWN_ENVIRONMENT_ID';
   const user = { key: 'user' };
@@ -21,11 +23,14 @@ describe('LDClient', () => {
     }
 
     // This tests that the client calls our platform's getCurrentUrl() and isDoNotTrack() methods.
-    it('sends an event for track()', done => {
+    it('sends an event for track()', async () => {
       const ep = stubEventProcessor();
       const client = LDClient.initializeInMain(envName, user, { eventProcessor: ep, bootstrap: {} });
-      const data = { thing: 'stuff' };
-      client.on('ready', () => {
+      await withCloseable(client, async () => {
+        await client.waitForInitialization();
+
+        const data = { thing: 'stuff' };
+
         client.track('eventkey', data);
 
         expect(ep.events.length).toEqual(2);
@@ -35,7 +40,6 @@ describe('LDClient', () => {
         expect(trackEvent.user).toEqual(user);
         expect(trackEvent.data).toEqual(data);
         expect(trackEvent.url).toEqual(null);
-        done();
       });
     });
   });
