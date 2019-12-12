@@ -12,11 +12,11 @@ const packageJson = require('../package.json');
 function initializeInMain(env, user, options = {}) {
   // Pass our platform object to the common code to create the Electron version of the client
   const platform = electronPlatform(options);
-  const extraDefaults = {};
+  const extraOptionDefs = {};
   if (!options.logger) {
-    extraDefaults.logger = createDefaultLogger();
+    extraOptionDefs.logger = { default: createDefaultLogger() };
   }
-  const clientVars = common.initialize(env, user, options, platform, extraDefaults);
+  const clientVars = common.initialize(env, user, options, platform, extraOptionDefs);
   const client = clientVars.client;
 
   // This tracker object communicates with any client instances in the renderer process that
