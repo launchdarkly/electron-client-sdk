@@ -51,6 +51,8 @@ describe('LDClient', () => {
           expect(data.kind).toEqual('diagnostic-init');
           expect(data.platform).toMatchObject({
             name: 'Electron',
+            electronVersion: process.versions.electron,
+            nodeVersion: process.versions.node,
           });
           expect(data.sdk).toMatchObject({
             name: 'Electron',

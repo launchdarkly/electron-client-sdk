@@ -39,6 +39,7 @@ function makeElectronPlatform(options) {
 
   ret.diagnosticPlatformData = {
     name: 'Electron',
+    electronVersion: process.versions.electron,
     nodeVersion: process.versions.node,
     osArch: os.arch(),
     osName: normalizePlatformName(os.platform()),
