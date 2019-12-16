@@ -3,6 +3,8 @@ const path = require('path');
 const fakeLaunchDarkly = require('./fakeLaunchDarkly');
 const testAppClient = require('./testAppClient');
 
+const { withCloseable } = require('launchdarkly-js-test-helpers');
+
 describe('full application integration tests', () => {
   const projectRoot = path.join(__dirname, '..', '..', '..');
   const sdkSymlinkPath = path.join(projectRoot, 'node_modules', 'launchdarkly-electron-client-sdk');
@@ -10,7 +12,7 @@ describe('full application integration tests', () => {
   const defaultEnvId = 'fake-env';
   const timeout = 10000; // jest default is 5000; Electron might be slow to start up
 
-  beforeEach(async () => {
+  beforeEach(() => {
     // Some of the interactions between the renderer client and the main client will only work if the SDK
     // has really been loaded as a Node module, rather than with "require('../index')" as we do in the
     // regular unit tests. So we are putting our own project into our own node_modules as a symlink.
@@ -20,7 +22,7 @@ describe('full application integration tests', () => {
     fs.symlinkSync(projectRoot, sdkSymlinkPath);
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     fs.unlinkSync(sdkSymlinkPath);
   });
 
@@ -28,23 +30,22 @@ describe('full application integration tests', () => {
     it(
       name,
       async () => {
-        const fakeLD = await fakeLaunchDarkly();
-        const app = testAppClient(fakeLD, {
-          userKey: defaultUserKey,
-          env: defaultEnvId,
-          testName: name,
+        await withCloseable(fakeLaunchDarkly, async fakeLD => {
+          const app = testAppClient(fakeLD, {
+            userKey: defaultUserKey,
+            env: defaultEnvId,
+            testName: name,
+          });
+          try {
+            await fn(fakeLD, app);
+          } catch (e) {
+            const logs = await app.getLogs();
+            console.log('*** console output from Electron app follows ***\n' + logs.join('\n'));
+            throw e;
+          } finally {
+            await app.close();
+          }
         });
-
-        try {
-          await fn(fakeLD, app);
-        } catch (e) {
-          const logs = await app.getLogs();
-          console.log('*** console output from Electron app follows ***\n' + logs.join('\n'));
-          throw e;
-        } finally {
-          fakeLD.close();
-          await app.close();
-        }
       },
       timeout
     );

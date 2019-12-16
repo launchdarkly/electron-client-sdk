@@ -1,9 +1,8 @@
-const httpServer = require('../http-server');
-const BlockingQueue = require('./blockingQueue');
+const { AsyncQueue, TestHttpHandlers, TestHttpServers } = require('launchdarkly-js-test-helpers');
 
-// This builds upon the mock HTTP server helpers in http-server.js to provide a simulated
-// LaunchDarkly server that implements all of the client-side endpoints, including streaming,
-// with separate state for each environment and user.
+// This builds upon the mock HTTP server helpers in launchdarkly-js-test-helpers to provide a
+// simulated LaunchDarkly server that implements all of the client-side endpoints, including
+// streaming, with separate state for each environment and user.
 //
 // Usage:
 //   const fld = await fakeLaunchDarkly();
@@ -15,19 +14,9 @@ const BlockingQueue = require('./blockingQueue');
 //   fld.close();
 
 async function fakeLaunchDarkly() {
-  const server = await httpServer.createServer();
+  const server = await TestHttpServers.start();
   const streams = [];
   const me = { url: server.url };
-
-  async function pipeStreamToResponse(stream, res) {
-    while (true) {
-      const data = await stream.pop();
-      if (data === undefined) {
-        break; // it's been closed
-      }
-      res.write(data);
-    }
-  }
 
   me.close = () => {
     streams.forEach(s => s.close());
@@ -35,40 +24,42 @@ async function fakeLaunchDarkly() {
   };
 
   me.addEnvironment = envId => {
-    const events = new BlockingQueue();
+    const events = new AsyncQueue();
     const users = {};
 
-    const forUser = async (req, action) => {
-      httpServer.readAll(req).then(body => {
-        const user = JSON.parse(body);
-        if (users[user.key]) {
-          action(users[user.key]);
-        }
-      });
+    const forUser = action => (req, res) => {
+      const user = JSON.parse(req.body);
+      if (users[user.key]) {
+        action(users[user.key], req, res);
+      } else {
+        TestHttpHandlers.respond(404)(req, res);
+      }
     };
 
-    server.on('request', (req, res) => {
-      // Note that we're assuming the client will use REPORT mode, because parsing the user properties
-      // out of the URL is a pain.
-      if (req.url === '/sdk/evalx/' + envId + '/user') {
-        forUser(req, u => {
-          httpServer.respondJson(res, u.flags);
-        });
-      } else if (req.url === '/eval/' + envId) {
-        forUser(req, u => {
-          res.writeHead(200, { 'Content-Type': 'text/event-stream' });
-          pipeStreamToResponse(u.stream, res);
-        });
-      } else if (req.url === '/events/bulk/' + envId) {
-        res.writeHead(202);
-        httpServer.readAll(req).then(body => {
-          events.addAll(JSON.parse(body));
-        });
-      }
+    server.forMethodAndPath(
+      // Note that we're assuming the client will use REPORT mode to get flags, because parsing the
+      // user properties out of the URL is a pain.
+      'report',
+      '/sdk/evalx/' + envId + '/user',
+      forUser((u, req, res) => {
+        TestHttpHandlers.respondJson(u.flags)(req, res);
+      })
+    );
+    server.forMethodAndPath(
+      'report',
+      '/eval/' + envId,
+      forUser((u, req, res) => {
+        TestHttpHandlers.sseStream(u.stream)(req, res);
+      })
+    );
+    server.forMethodAndPath('post', '/events/bulk/' + envId, (req, res) => {
+      JSON.parse(req.body).forEach(event => events.add(event));
+      TestHttpHandlers.respond(202)(req, res);
     });
 
     function addUser(userKey, flagValues) {
-      const stream = new BlockingQueue();
+      const stream = new AsyncQueue();
+      streams.push(stream);
       const flags = {};
       Object.keys(flagValues).forEach(key => {
         flags[key] = { value: flagValues[key], version: 1 };
@@ -81,15 +72,15 @@ async function fakeLaunchDarkly() {
 
       return {
         streamUpdate: (eventName, data) => {
-          stream.add(`event: ${eventName}\ndata: ${JSON.stringify(data)}\n\n`);
+          stream.add({ type: eventName, data: JSON.stringify(data) });
         },
       };
     }
 
     return {
-      events: events,
-      addUser: addUser,
-      nextEvent: async () => await events.pop(),
+      events,
+      addUser,
+      nextEvent: async () => await events.take(),
     };
   };
 
