@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>LDElectronNodeAdapterClient | LaunchDarkly Electron SDK (1.4.0)</title>
+	<title>LDElectronNodeAdapterClient | LaunchDarkly Electron SDK (1.4.1)</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">LaunchDarkly Electron SDK (1.4.0)</a>
+					<a href="../index.html" class="title">LaunchDarkly Electron SDK (1.4.1)</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -117,7 +117,7 @@
 					<a name="allflags" class="tsd-anchor"></a>
 					<h3>all<wbr>Flags</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">all<wbr>Flags<span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagset.html" class="tsd-signature-type">LDFlagSet</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">all<wbr>Flags<span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.ldflagset.html" class="tsd-signature-type">LDFlagSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagset.html" class="tsd-signature-type">LDFlagSet</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -142,14 +142,14 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.ldflagset.html" class="tsd-signature-type">LDFlagSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>  A Node-style callback to receive the result (as an <a href="_launchdarkly_electron_client_sdk_.ldflagset.html">LDFlagSet</a>). If omitted, you
 										will receive a Promise instead.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagset.html" class="tsd-signature-type">LDFlagSet</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagset.html" class="tsd-signature-type">LDFlagSet</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>  If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
 							with the result as an <a href="_launchdarkly_electron_client_sdk_.ldflagset.html">LDFlagSet</a>.</p>
 						</li>
@@ -159,7 +159,7 @@
 					<a name="allflagsstate" class="tsd-anchor"></a>
 					<h3>all<wbr>Flags<wbr>State</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">all<wbr>Flags<wbr>State<span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-signature-type">LDFlagsState</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">all<wbr>Flags<wbr>State<span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-signature-type">LDFlagsState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-signature-type">LDFlagsState</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -193,14 +193,14 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-signature-type">LDFlagsState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>  A Node-style callback to receive the result (as an <a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html">LDFlagsState</a>). If omitted, you
 										will receive a Promise instead.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-signature-type">LDFlagsState</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-signature-type">LDFlagsState</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>  If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
 							with the result as an <a href="_launchdarkly_electron_client_sdk_.ldflagsstate.html">LDFlagsState</a>.</p>
 						</li>
@@ -233,7 +233,7 @@
 					<a name="flush" class="tsd-anchor"></a>
 					<h3>flush</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">flush<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">flush<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -252,14 +252,14 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>  A function which will be called when the flush completes. If omitted, you
 										will receive a Promise instead.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>  If you provided a callback, then nothing. Otherwise, a Promise which resolves once
 								flushing is finished. Note that the Promise will be rejected if the HTTP request
 							fails, so be sure to attach a rejection handler to it.</p>
@@ -433,7 +433,7 @@
 					<a name="variation" class="tsd-anchor"></a>
 					<h3>variation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">variation<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, defaultValue<span class="tsd-signature-symbol">: </span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">variation<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, defaultValue<span class="tsd-signature-symbol">: </span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -469,16 +469,13 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>  A Node-style callback to receive the result value. If omitted, you will receive a Promise instead.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a><span class="tsd-signature-symbol">&gt;</span>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">void</span>
-							</h4>
+							<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></h4>
 							<p>  If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
 							with the result value.</p>
 						</li>
@@ -488,7 +485,7 @@
 					<a name="variationdetail" class="tsd-anchor"></a>
 					<h3>variation<wbr>Detail</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">variation<wbr>Detail<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, defaultValue<span class="tsd-signature-symbol">: </span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html" class="tsd-signature-type">LDEvaluationDetail</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">variation<wbr>Detail<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, user<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-signature-type">LDUser</a>, defaultValue<span class="tsd-signature-symbol">: </span><a href="../index.html#ldflagvalue" class="tsd-signature-type">LDFlagValue</a>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html" class="tsd-signature-type">LDEvaluationDetail</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html" class="tsd-signature-type">LDEvaluationDetail</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -528,17 +525,14 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html" class="tsd-signature-type">LDEvaluationDetail</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>  A Node-style callback to receive the result (as an <a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html">LDEvaluationDetail</a>). If omitted, you
 										will receive a Promise instead.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html" class="tsd-signature-type">LDEvaluationDetail</a><span class="tsd-signature-symbol">&gt;</span>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">void</span>
-							</h4>
+							<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html" class="tsd-signature-type">LDEvaluationDetail</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></h4>
 							<p>  If you provided a callback, then nothing. Otherwise, a Promise which will be resolved
 							with the result (as an <a href="_launchdarkly_electron_client_sdk_.ldevaluationdetail.html">LDEvaluationDetail</a>).</p>
 						</li>
@@ -548,7 +542,7 @@
 					<a name="waitforinitialization" class="tsd-anchor"></a>
 					<h3>wait<wbr>For<wbr>Initialization</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">wait<wbr>For<wbr>Initialization<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldelectronnodeadapterclient.html" class="tsd-signature-type">LDElectronNodeAdapterClient</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">wait<wbr>For<wbr>Initialization<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldelectronnodeadapterclient.html" class="tsd-signature-type">LDElectronNodeAdapterClient</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -566,7 +560,7 @@
 								<p>Note that you can also use event listeners (<a href="_launchdarkly_electron_client_sdk_.ldelectronmainclient.html#on">on</a>) for the same purpose: the event <code>&quot;ready&quot;</code>
 								indicates success, and <code>&quot;failed&quot;</code> indicates failure.</p>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldelectronnodeadapterclient.html" class="tsd-signature-type">LDElectronNodeAdapterClient</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_launchdarkly_electron_client_sdk_.ldelectronnodeadapterclient.html" class="tsd-signature-type">LDElectronNodeAdapterClient</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>  A Promise that will be resolved if the client initializes successfully, or rejected if it
 							fails. If successful, the result is the same client object.</p>
 						</li>
@@ -576,7 +570,7 @@
 					<a name="waituntilready" class="tsd-anchor"></a>
 					<h3>wait<wbr>Until<wbr>Ready</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">wait<wbr>Until<wbr>Ready<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">wait<wbr>Until<wbr>Ready<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -592,7 +586,7 @@
 								<p><strong>Deprecated</strong>: please use <a href="_launchdarkly_electron_client_sdk_.ldelectronnodeadapterclient.html#waitforinitialization">waitForInitialization</a> instead. The difference between that method
 								and this one is that <code>waitUntilReady</code> never rejects the Promise, even if initialization fails.</p>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>  A Promise that will be resolved if the client initializes successfully.</p>
 						</li>
 					</ul>
@@ -602,7 +596,7 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="current tsd-kind-module tsd-is-not-exported">
+					<li class="current tsd-kind-module">
 						<a href="../index.html">&quot;launchdarkly-<wbr>electron-<wbr>client-<wbr>sdk&quot;</a>
 					</li>
 				</ul>
