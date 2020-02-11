@@ -49,12 +49,11 @@ function makeEventUrlTransformer() {
 
 function filePathToUrl(filePath) {
   // Adapted from https://github.com/sindresorhus/file-url
-  const pathName = filePath.replace(/\\/g, '/');
+  const pathWithNormalizedSeparators = filePath.replace(/\\/g, '/');
 
   // in Windows, drive letter must be prefixed with a slash
-  if (pathName[0] !== '/') {
-    pathName = `/${pathName}`;
-  }
+  const pathName =
+    pathWithNormalizedSeparators[0] === '/' ? pathWithNormalizedSeparators : `/${pathWithNormalizedSeparators}`;
 
   // Escape required characters for path components
   // See: https://tools.ietf.org/html/rfc3986#section-3.3
