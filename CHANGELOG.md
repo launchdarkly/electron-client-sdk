@@ -2,6 +2,11 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.4.3] - 2020-02-11
+### Fixed:
+- Fixed a reassignment-to-const bug that caused an error in some Node/Electron versions. ([#15](https://github.com/launchdarkly/electron-client-sdk/issues/15))
+- Tightened linter rules to avoid errors like the above.
+
 ## [1.4.2] - 2020-02-10
 ### Changed:
 - Updated JS SDK dependency version from 2.16.1 to 2.16.3 for several recent fixes. See release notes for [2.16.2](https://github.com/launchdarkly/js-client-sdk/releases/tag/2.16.2), [2.16.3](https://github.com/launchdarkly/js-client-sdk/releases/tag/2.16.3).
