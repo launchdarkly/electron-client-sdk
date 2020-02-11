@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;launchdarkly-electron-client-sdk&quot; | LaunchDarkly Electron SDK (1.4.1)</title>
+	<title>&quot;launchdarkly-electron-client-sdk&quot; | LaunchDarkly Electron SDK (1.4.2)</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">LaunchDarkly Electron SDK (1.4.1)</a>
+					<a href="index.html" class="title">LaunchDarkly Electron SDK (1.4.2)</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -199,7 +199,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in docs/build/typings.d.ts:770</li>
+									<li>Defined in docs/build/typings.d.ts:775</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -233,13 +233,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in docs/build/typings.d.ts:647</li>
+									<li>Defined in docs/build/typings.d.ts:652</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates an instance of the LaunchDarkly Electron client to be used in the main process.</p>
 								</div>
+								<p>Applications should instantiate a single instance for the lifetime of the application.
+									The client will begin attempting to connect to LaunchDarkly as soon as it is created. To
+									determine when it is ready to use, call <a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronmainclient.html#waitforinitialization">LDElectronMainClient.waitForInitialization</a>, or register an
+								event listener for the <code>&quot;ready&quot;</code> event using <a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronmainclient.html#on">LDElectronMainClient.on</a>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -276,7 +280,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in docs/build/typings.d.ts:663</li>
+									<li>Defined in docs/build/typings.d.ts:668</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
