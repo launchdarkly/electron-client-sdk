@@ -26,6 +26,11 @@ declare module 'launchdarkly-electron-client-sdk' {
   /**
    * Creates an instance of the LaunchDarkly Electron client to be used in the main process.
    *
+   * Applications should instantiate a single instance for the lifetime of the application.
+   * The client will begin attempting to connect to LaunchDarkly as soon as it is created. To
+   * determine when it is ready to use, call [[LDElectronMainClient.waitForInitialization]], or register an
+   * event listener for the `"ready"` event using [[LDElectronMainClient.on]].
+   *
    * @param envKey
    *   The LaunchDarkly environment ID.
    * @param user
