@@ -18,7 +18,9 @@ describe('full application integration tests', () => {
     // regular unit tests. So we are putting our own project into our own node_modules as a symlink.
     try {
       fs.unlinkSync(sdkSymlinkPath);
-    } catch {}
+    } catch {
+      // don't worry if there was no such link
+    }
     fs.symlinkSync(projectRoot, sdkSymlinkPath);
   });
 
@@ -40,7 +42,7 @@ describe('full application integration tests', () => {
             await fn(fakeLD, app);
           } catch (e) {
             const logs = await app.getLogs();
-            console.log('*** console output from Electron app follows ***\n' + logs.join('\n'));
+            console.log('*** console output from Electron app follows ***\n' + logs.join('\n')); // eslint-disable-line no-console
             throw e;
           } finally {
             await app.close();
@@ -167,7 +169,7 @@ describe('full application integration tests', () => {
 
     await app.triggerCustomEvent(0);
 
-    while (true) {
+    for (;;) {
       const e = await env.nextEvent();
       if (e.kind === 'custom') {
         expect(e.key).toEqual('my-event');

@@ -3,6 +3,7 @@ parser: babel-eslint
 root: true
 extends:
   - prettier
+  - eslint:recommended # https://eslint.org/docs/rules/
 env:
   es6: true
   node: true
@@ -69,9 +70,6 @@ rules:
   # https://eslint.org/docs/rules/no-new-wrappers
   no-new-wrappers: error
 
-  # https://eslint.org/docs/rules/no-cond-assign
-  no-cond-assign: error
-
   # https://eslint.org/docs/rules/no-use-before-define
   no-use-before-define:
     - error
@@ -89,9 +87,6 @@ rules:
   # https://eslint.org/docs/rules/no-nested-ternary
   no-nested-ternary: error
 
-  # https://eslint.org/docs/rules/no-unused-vars
-  no-unused-vars: error
-
   # https://eslint.org/docs/rules/no-var
   no-var: error
 
@@ -105,6 +100,3 @@ rules:
   arrow-body-style:
     - error
     - as-needed
-
-  # https://eslint.org/docs/rules/no-undef
-  no-undef: error
