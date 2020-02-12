@@ -55,7 +55,7 @@ describe('LDClient', () => {
             nodeVersion: process.versions.node,
           });
           expect(data.sdk).toMatchObject({
-            name: 'Electron',
+            name: 'electron-client-sdk',
           });
         });
       });

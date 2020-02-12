@@ -33,7 +33,7 @@ function makeElectronPlatform(options) {
   ret.version = packageJson.version;
 
   ret.diagnosticSdkData = {
-    name: 'Electron',
+    name: 'electron-client-sdk',
     version: packageJson.version,
   };
 
