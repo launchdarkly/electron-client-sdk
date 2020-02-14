@@ -2,6 +2,15 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.5.0] - 2020-02-14
+Note: if you are using the LaunchDarkly Relay Proxy to forward events, update the Relay to version 5.10.0 or later before updating to this Electron SDK version.
+
+### Added:
+- The SDK now periodically sends diagnostic data to LaunchDarkly, describing the version and configuration of the SDK, the architecture and version of the runtime platform, and performance statistics. No credentials, hostnames, or other identifiable values are included. This behavior can be disabled with the `diagnosticOptOut` option, or configured with `diagnosticRecordingInterval`.
+
+### Fixed:
+- When using secure mode in conjunction with streaming mode, if an application specified a new `hash` parameter while changing the current user with `identify()`, the SDK was not using the new `hash` value when recomputing the stream URL, causing the stream to fail. (Thanks, [andrao](https://github.com/launchdarkly/js-sdk-common/issues/13)!)
+
 ## [1.4.3] - 2020-02-11
 ### Fixed:
 - Fixed a reassignment-to-const bug that caused an error in some Node/Electron versions. ([#15](https://github.com/launchdarkly/electron-client-sdk/issues/15))
