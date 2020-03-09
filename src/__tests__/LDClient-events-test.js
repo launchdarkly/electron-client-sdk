@@ -45,7 +45,12 @@ describe('LDClient', () => {
         const config = { bootstrap: {}, eventsUrl: server.url };
         const client = LDClient.initializeInMain(envName, user, config);
         await withCloseable(client, async () => {
-          const req = await server.nextRequest();
+          // There will be two requests: one for the initial "identify" event that the client always sends, and
+          // one for "diagnostic-init". The diagnostic one should normally appear first but you never know.
+          const req0 = await server.nextRequest();
+          const req1 = await server.nextRequest();
+          const req = req0.path.startsWith('/events/diagnostic/') ? req0 : req1;
+
           expect(req.path).toEqual('/events/diagnostic/' + envName);
           const data = JSON.parse(req.body);
           expect(data.kind).toEqual('diagnostic-init');
