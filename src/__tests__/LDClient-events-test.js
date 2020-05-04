@@ -1,6 +1,6 @@
 import * as LDClient from '../index';
 
-const { TestHttpHandlers, TestHttpServers, withCloseable } = require('launchdarkly-js-test-helpers');
+const { TestHttpHandlers, TestHttpServers, sleepAsync, withCloseable } = require('launchdarkly-js-test-helpers');
 
 describe('LDClient', () => {
   const envName = 'UNKNOWN_ENVIRONMENT_ID';
@@ -38,6 +38,28 @@ describe('LDClient', () => {
     });
   });
 
+  async function expectDiagnosticEventAndDiscardRegularEvent(server) {
+    const req0 = await server.nextRequest();
+    const req1 = await server.nextRequest();
+    const expectedPath = '/events/diagnostic/' + envName;
+    const otherPath = '/events/bulk/' + envName;
+    let initEventReq;
+    if (req0.path === expectedPath) {
+      expect(req1.path).toEqual(otherPath);
+      initEventReq = req0;
+    } else {
+      expect(req0.path).toEqual(otherPath);
+      expect(req1.path).toEqual(expectedPath);
+      initEventReq = req1;
+    }
+    return JSON.parse(initEventReq.body);
+  }
+
+  async function expectNoMoreRequests(server, timeout) {
+    await sleepAsync(timeout);
+    expect(server.requests.length()).toEqual(0);
+  }
+
   describe('diagnostic events', () => {
     it('sends diagnostic init event', async () => {
       await withCloseable(TestHttpServers.start, async server => {
@@ -45,14 +67,7 @@ describe('LDClient', () => {
         const config = { bootstrap: {}, eventsUrl: server.url };
         const client = LDClient.initializeInMain(envName, user, config);
         await withCloseable(client, async () => {
-          // There will be two requests: one for the initial "identify" event that the client always sends, and
-          // one for "diagnostic-init". The diagnostic one should normally appear first but you never know.
-          const req0 = await server.nextRequest();
-          const req1 = await server.nextRequest();
-          const req = req0.path.startsWith('/events/diagnostic/') ? req0 : req1;
-
-          expect(req.path).toEqual('/events/diagnostic/' + envName);
-          const data = JSON.parse(req.body);
+          const data = await expectDiagnosticEventAndDiscardRegularEvent(server);
           expect(data.kind).toEqual('diagnostic-init');
           expect(data.platform).toMatchObject({
             name: 'Electron',
@@ -62,6 +77,7 @@ describe('LDClient', () => {
           expect(data.sdk).toMatchObject({
             name: 'electron-client-sdk',
           });
+          await expectNoMoreRequests(server, 50);
         });
       });
     });
