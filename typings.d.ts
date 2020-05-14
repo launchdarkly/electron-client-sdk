@@ -233,7 +233,7 @@ declare module 'launchdarkly-electron-client-sdk' {
       user: LDUser,
       defaultValue: LDFlagValue,
       callback?: (err: any, res: LDFlagValue) => void
-    ): Promise<LDFlagValue> | void;
+    ): Promise<LDFlagValue>;
 
     /**
      * Determines the variation of a feature flag for a user, along with information about how it was
@@ -263,7 +263,7 @@ declare module 'launchdarkly-electron-client-sdk' {
       user: LDUser,
       defaultValue: LDFlagValue,
       callback?: (err: any, res: LDEvaluationDetail) => void
-    ): Promise<LDEvaluationDetail> | void;
+    ): Promise<LDEvaluationDetail>;
 
     /**
      * Retrieves the set of all flag values for a user.
