@@ -56,11 +56,17 @@ function initializeInMain(env, user, options = {}) {
 }
 
 function createDefaultLogger() {
-  return new winston.Logger({
-    level: 'warn',
+  const prefixFormat = winston.format(info => {
+    // eslint-disable-next-line no-param-reassign
+    info.message = `[LaunchDarkly] ${info.message ? info.message : ''}`;
+    return info;
+  });
+
+  return winston.createLogger({
+    level: 'info',
     transports: [
       new winston.transports.Console({
-        formatter: options => '[LaunchDarkly] ' + (options.message || ''),
+        format: winston.format.combine(prefixFormat(), winston.format.simple()),
       }),
     ],
   });
