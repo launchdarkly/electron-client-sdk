@@ -8,6 +8,10 @@
  
 [![Twitter Follow](https://img.shields.io/twitter/follow/launchdarkly.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/intent/follow?screen_name=launchdarkly)
 
+## Supported Electron versions
+
+This version of the LaunchDarkly SDK is tested against Electron 7.x and is intended to support this and newer Electron versions.
+
 ## Getting started
 
 Refer to the [SDK documentation](https://docs.launchdarkly.com/docs/electron-sdk-reference) for instructions on getting started with using the SDK.

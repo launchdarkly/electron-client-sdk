@@ -52,7 +52,7 @@ app.on('ready', () => {
     });
   });
 
-  const w = new electron.BrowserWindow({ width: 800, height: 600 });
+  const w = new electron.BrowserWindow({ width: 800, height: 600, webPreferences: { nodeIntegration: true } });
   w.loadURL(`file://${__dirname}/testAppWindow.html`);
 });
 
