@@ -2,6 +2,13 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.5.6] - 2020-09-14
+### Changed:
+- The SDK&#39;s CircleCI configuration now tests compatibility against each supported major Electron version, currently Electron 2 through 9.
+
+### Fixed:
+- In streaming mode, when connecting to the Relay Proxy rather than directly to the LaunchDarkly streaming service, if the current user was changed twice within a short time it was possible for the SDK to revert to flag values from the previous user.
+
 ## [1.5.5] - 2020-07-02
 ### Changed:
 - The default implementation of logging now uses Winston 3.x rather than Winston 2.x. This does not change the content of the log output, and if you have specified your own custom logger then the SDK still uses that. The only effect is that the SDK no longer has dependencies on Winston 2.x.
