@@ -12,6 +12,7 @@ module.exports = {
   globals: {
     VERSION: version,
   },
+  reporters: ['default', 'jest-junit'],
   runner: '@jest-runner/electron',
   testEnvironment: '@jest-runner/electron/environment',
 };

@@ -1,9 +1,74 @@
-version: 2
+version: 2.1
+
+workflows:
+  test:
+    jobs:
+      - build-and-test:
+          name: Electron 2
+          electron-version: '^2.0.0'
+          spectron-version: '^4.0.0'
+          jest-runner-electron-version: '^1.1.1'
+      - build-and-test:
+          name: Electron 3
+          electron-version: '^3.0.0'
+          spectron-version: '^5.0.0'
+          jest-runner-electron-version: '^2.0.0'
+      - build-and-test:
+          name: Electron 4
+          electron-version: '^4.0.0'
+          spectron-version: '^6.0.0'
+          jest-runner-electron-version: '^3.0.0'
+      - build-and-test:
+          name: Electron 5
+          electron-version: '^5.0.0'
+          spectron-version: '^7.0.0'
+          jest-runner-electron-version: '^3.0.0'
+      - build-and-test:
+          name: Electron 6
+          electron-version: '^6.0.0'
+          spectron-version: '^8.0.0'
+          jest-runner-electron-version: '^3.0.0'
+      - build-and-test:
+          name: Electron 7
+          electron-version: '^7.0.0'
+          spectron-version: '^9.0.0'
+          jest-runner-electron-version: '^3.0.0'
+      - build-and-test:
+          name: Electron 8
+          electron-version: '^8.0.0'
+          spectron-version: '^10.0.0'
+          jest-runner-electron-version: '^3.0.0'
+      - build-and-test:
+          name: Electron 9
+          electron-version: '^9.0.0'
+          spectron-version: '11.0.0' # do NOT use the caret prefix as 11.1.0 is broken
+          jest-runner-electron-version: '^3.0.0'
+      # - build-and-test:
+      #     name: Electron 10
+      #     electron-version: '10.0.0'
+      #     We are awaiting a spectron release to be compatible with electron 10
+      #     https://github.com/electron-userland/spectron/issues/693
+      #     spectron-version: '??'
+      #     jest-runner-electron-version: '3.0.0'
+      - build-and-test:
+          name: Electron defaults
+
 jobs:
-  build:
+  build-and-test:
+    parameters:
+      electron-version:
+        type: string
+        default: ''
+      spectron-version:
+        type: string
+        default: ''
+      jest-runner-electron-version:
+        type: string
+        default: ''
     docker:
       - image: circleci/node:13
     steps:
+      - run: sudo apt-get update
       - run:
           name: install packages required by Electron
           command: sudo apt-get install libgtk-3-0 libxss1 libgconf2-4 libnss3 libasound2
@@ -13,6 +78,24 @@ jobs:
           background: true
       - checkout
 
+      - when:
+          condition: <<parameters.electron-version>>
+          steps:
+            - run:
+                name: Install specific electron version
+                command: npm install electron@<<parameters.electron-version>>
+      - when:
+          condition: <<parameters.spectron-version>>
+          steps:
+            - run:
+                name: Install specific spectron version
+                command: npm install spectron@<<parameters.spectron-version>>
+      - when:
+          condition: <<parameters.jest-runner-electron-version>>
+          steps:
+            - run:
+                name: Install specific jest runner electron version
+                command: npm install @jest-runner/electron@<<parameters.jest-runner-electron-version>>
       - run: npm install
       - run: npm run lint:all
 
