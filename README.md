@@ -5,12 +5,12 @@
 ## LaunchDarkly overview
 
 [LaunchDarkly](https://www.launchdarkly.com) is a feature management platform that serves over 100 billion feature flags daily to help teams build better software, faster. [Get started](https://docs.launchdarkly.com/docs/getting-started) using LaunchDarkly today!
- 
+
 [![Twitter Follow](https://img.shields.io/twitter/follow/launchdarkly.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/intent/follow?screen_name=launchdarkly)
 
 ## Supported Electron versions
 
-This version of the LaunchDarkly SDK is tested against Electron 7.x and is intended to support this and newer Electron versions.
+This version of the LaunchDarkly SDK is tested against Electron 2.x through 9.x.
 
 ## Getting started
 

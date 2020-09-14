@@ -41,8 +41,14 @@ describe('full application integration tests', () => {
           try {
             await fn(fakeLD, app);
           } catch (e) {
-            const logs = await app.getLogs();
-            console.log('*** console output from Electron app follows ***\n' + logs.join('\n')); // eslint-disable-line no-console
+            // Intermittently app.client will be undefined, in which case app.getLogs() will fail, swallowing the original error.
+            // This workaround allows the original error to be reported even though the app logs are inaccessible.
+            if (app.client) {
+              const logs = await app.getLogs();
+              console.log('*** console output from Electron app follows ***\n' + logs.join('\n')); // eslint-disable-line no-console
+            } else {
+              console.log('Cannot attach console logs because app.client is undefined'); // eslint-disable-line no-console
+            }
             throw e;
           } finally {
             await app.close();
