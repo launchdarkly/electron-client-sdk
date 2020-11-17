@@ -1,6 +1,6 @@
 {
   "name": "launchdarkly-electron-client-sdk",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "LaunchDarkly SDK for Electron",
   "author": "LaunchDarkly <team@launchdarkly.com>",
   "license": "Apache-2.0",
