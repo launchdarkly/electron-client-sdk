@@ -2,6 +2,10 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.5.7] - 2020-11-17
+### Fixed:
+- Updated the `LDEvaluationDetail.reason` type definition to be nullable. This value will be `null` when `LDOptions.evaluationReasons` is `false`.
+
 ## [1.5.6] - 2020-09-14
 ### Changed:
 - The SDK&#39;s CircleCI configuration now tests compatibility against each supported major Electron version, currently Electron 2 through 9.
