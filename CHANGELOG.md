@@ -2,6 +2,10 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.5.8] - 2021-01-26
+### Changed:
+- In streaming mode, the SDK now automatically drops and restarts the stream connection if it has received no data from the server within a 5-minute interval. This ensures that if the connection fails in such a way that the SDK cannot detect the failure as an I/O error, it will not hang forever waiting for updates from the phantom connection. The LaunchDarkly streaming service sends a tiny &#34;heartbeat&#34; message at regular intervals less than this timeout, to ensure that the SDK will not drop the connection if it is still usable. This logic exists in most other LaunchDarkly SDKs but was not previously implemented in the Electron SDK.
+
 ## [1.5.7] - 2020-11-17
 ### Fixed:
 - Updated the `LDEvaluationDetail.reason` type definition to be nullable. This value will be `null` when `LDOptions.evaluationReasons` is `false`.
