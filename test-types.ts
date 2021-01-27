@@ -23,9 +23,11 @@ var allOptions: ld.LDOptions = {
   flushInterval: 1,
   samplingInterval: 1,
   streamReconnectDelay: 1,
-  logger: logger
+  logger: logger,
+  autoAliasingOptOut: true
 };
 var user: ld.LDUser = { key: 'user' };
+var anonymousUser: ld.LDUser = { key: 'anon-user', anonymous: true };
 
 // Note that there are three slightly different client interfaces provided by the SDK
 
@@ -48,6 +50,10 @@ client2.identify(user).then(() => {});
 client2.identify(user, undefined, () => {});
 client2.identify(user, 'hash').then(() => {});
 client3.identify(user); // LDElectronNodeAdapterClient has server-side semantics for identify()
+
+client1.alias(user, anonymousUser);
+client2.alias(user, anonymousUser);
+client3.alias(user, anonymousUser);
 
 var user1: ld.LDUser = client1.getUser();
 var user2: ld.LDUser = client2.getUser();
