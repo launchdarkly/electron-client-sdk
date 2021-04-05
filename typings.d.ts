@@ -52,7 +52,7 @@ declare module 'launchdarkly-electron-client-sdk' {
    *   Optional configuration settings. Since the main process client controls all communication with
    *   LaunchDarkly, the only options that can actually be set for the renderer client are the ones that
    *   control event generation: `sendEvents`, `allAttributesPrivate`, `privateAttributeNames`,
-   *   `allowFrequentDuplicateEvents`, and `sendEventsOnlyForVariation`.
+   *   `inlineUsersInEvents, `allowFrequentDuplicateEvents`, and `sendEventsOnlyForVariation`.
    */
   export function initializeInRenderer(envKey?: string, options?: LDOptions): LDElectronRendererClient;
 

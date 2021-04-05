@@ -17,6 +17,7 @@ var allOptions: ld.LDOptions = {
   evaluationReasons: true,
   sendEvents: true,
   allAttributesPrivate: true,
+  inlineUsersInEvents: true,
   privateAttributeNames: [ 'x' ],
   allowFrequentDuplicateEvents: true,
   sendEventsOnlyForVariation: true,
