@@ -2,6 +2,10 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.6.1] - 2021-04-05
+### Fixed:
+- The property `LDOptions.inlineUsersInEvents` was not included in the TypeScript definitions.
+
 ## [1.6.0] - 2021-01-27
 ### Added:
 - Added the `alias` method. This method can be used to associate two user objects for analytics purposes. When invoked, this method will queue a new alias event to be sent to LaunchDarkly.
