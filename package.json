@@ -45,7 +45,7 @@
     "jest": "^24.7.1",
     "jest-junit": "^6.3.0",
     "jsdom": "^11.11.0",
-    "launchdarkly-js-test-helpers": "1.1.0",
+    "launchdarkly-js-test-helpers": "1.2.1",
     "prettier": "1.11.1",
     "readline-sync": "^1.4.9",
     "rimraf": "^2.6.2",
