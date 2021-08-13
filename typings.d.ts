@@ -5,7 +5,7 @@
  * an instance of [[LDElectronMainClient]]-- and, optionally, call [[initializeInRenderer]] in a
  * renderer process to obtain a corresponding instance of [[LDElectronRendererClient]].
  *
- * For more information, see the [SDK reference guide](http://docs.launchdarkly.com/docs/electron-sdk-reference).
+ * For more information, see the [SDK reference guide](https://docs.launchdarkly.com/sdk/client-side/electron).
  */
 declare module 'launchdarkly-electron-client-sdk' {
 
@@ -67,7 +67,7 @@ declare module 'launchdarkly-electron-client-sdk' {
    *
    * Applications should configure the client at startup time with [[initializeInMain]], and reuse the same instance.
    *
-   * For more information, see the [SDK Reference Guide](http://docs.launchdarkly.com/docs/electron-sdk-reference).
+   * For more information, see the [SDK Reference Guide](https://docs.launchdarkly.com/sdk/client-side/electron).
    */
   export interface LDElectronMainClient extends LDClientBase {
     /**
@@ -84,7 +84,7 @@ declare module 'launchdarkly-electron-client-sdk' {
      * use [[initializeInRenderer]] to create a client that automatically synchronizes itself with
      * the main process client. However, this method is still provided for compatibility in case
      * you are adapting code that used this mechanism with one of the server-side SDKs.
-     * 
+     *
      * @returns the state object
      */
     allFlagsState(): LDFlagsState;
@@ -94,9 +94,9 @@ declare module 'launchdarkly-electron-client-sdk' {
    * The LaunchDarkly SDK client object for use in an Electron renderer process.
    *
    * Applications should configure the client at page load time with [[initializeInRenderer]]. It is basically a
-   * proxy for the client instance in the main process, and is automatically kept in sync with the main client's state. 
+   * proxy for the client instance in the main process, and is automatically kept in sync with the main client's state.
    *
-   * For more information, see the [SDK Reference Guide](http://docs.launchdarkly.com/docs/electron-sdk-reference).
+   * For more information, see the [SDK Reference Guide](https://docs.launchdarkly.com/sdk/client-side/electron).
    */
   export interface LDElectronRendererClient extends LDClientBase {
   }
@@ -130,7 +130,7 @@ declare module 'launchdarkly-electron-client-sdk' {
      *   The flag key.
      */
     getFlagReason(key: string): LDEvaluationReason;
-    
+
     /**
      * Returns a map of feature flag keys to values. If a flag would have evaluated to the
      * default value, its value will be null.
@@ -205,7 +205,7 @@ declare module 'launchdarkly-electron-client-sdk' {
      *
      * Note that you can also use event listeners ([[on]]) for the same purpose: the event `"ready"`
      * indicates success, and `"failed"` indicates failure.
-     * 
+     *
      * @returns
      *   A Promise that will be resolved if the client initializes successfully, or rejected if it
      *   fails. If successful, the result is the same client object.
@@ -242,7 +242,7 @@ declare module 'launchdarkly-electron-client-sdk' {
      * The `reason` property of the result will also be included in analytics events, if you are
      * capturing detailed event data for this flag.
      *
-     * For more information, see the [SDK reference guide](https://docs.launchdarkly.com/docs/evaluation-reasons).
+     * For more information, see the [SDK reference guide](https://docs.launchdarkly.com/sdk/concepts/evaluation-reasons).
      *
      * @param key
      *   The unique key of the feature flag.
@@ -354,16 +354,16 @@ declare module 'launchdarkly-electron-client-sdk' {
     track(key: string, user: LDUser, data?: any): void;
 
     /**
-     * Associates two users for analytics purposes. 
-     * 
-     * This can be helpful in the situation where a person is represented by multiple 
-     * LaunchDarkly users. This may happen, for example, when a person initially logs into 
+     * Associates two users for analytics purposes.
+     *
+     * This can be helpful in the situation where a person is represented by multiple
+     * LaunchDarkly users. This may happen, for example, when a person initially logs into
      * an application-- the person might be represented by an anonymous user prior to logging
      * in and a different user after logging in, as denoted by a different user key.
-     * 
-     * @param user 
+     *
+     * @param user
      *   The newly identified user.
-     * @param previousUser 
+     * @param previousUser
      *   The previously identified user.
      */
     alias(user: LDUser, previousUser: LDUser): void;
