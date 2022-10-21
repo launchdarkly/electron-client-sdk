@@ -2,6 +2,12 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.7.0] - 2022-10-21
+### Changed:
+- Updated `launchdarkly-js-sdk-common` to version `3.8.3`.
+- Updated `launchdarkly-js-client-sdk` to version `2.24.2`.
+- Updated `launchdarkly-eventsource` to version `1.4.4`.
+
 ## [1.6.3] - 2021-06-10
 ### Fixed:
 - Updated transitive dependency on the package `url-parse` due to a [vulnerability warning](https://github.com/advisories/GHSA-9m6j-fcg5-2442).
