@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;launchdarkly-electron-client-sdk&quot; | LaunchDarkly Electron SDK (1.6.3)</title>
-	<meta name="description" content="Documentation for LaunchDarkly Electron SDK (1.6.3)">
+	<title>&quot;launchdarkly-electron-client-sdk&quot; | LaunchDarkly Electron SDK (1.7.0)</title>
+	<meta name="description" content="Documentation for LaunchDarkly Electron SDK (1.7.0)">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">LaunchDarkly Electron SDK (1.6.3)</a>
+					<a href="index.html" class="title">LaunchDarkly Electron SDK (1.7.0)</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -71,7 +71,7 @@
 					<p>In typical usage, you will call <a href="index.html#initializeinmain">initializeInMain</a> in the main process at startup time to obtain
 						an instance of <a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronmainclient.html">LDElectronMainClient</a>-- and, optionally, call <a href="index.html#initializeinrenderer">initializeInRenderer</a> in a
 					renderer process to obtain a corresponding instance of <a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronrendererclient.html">LDElectronRendererClient</a>.</p>
-					<p>For more information, see the <a href="http://docs.launchdarkly.com/docs/electron-sdk-reference">SDK reference guide</a>.</p>
+					<p>For more information, see the <a href="https://docs.launchdarkly.com/sdk/client-side/electron">SDK reference guide</a>.</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -81,6 +81,7 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.basicloggeroptions.html" class="tsd-kind-icon">Basic<wbr>Logger<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronmainclient.html" class="tsd-kind-icon">LDElectron<wbr>Main<wbr>Client</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronnodeadapterclient.html" class="tsd-kind-icon">LDElectron<wbr>Node<wbr>Adapter<wbr>Client</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronrendererclient.html" class="tsd-kind-icon">LDElectron<wbr>Renderer<wbr>Client</a></li>
@@ -88,6 +89,10 @@
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldflagchangeset.html" class="tsd-kind-icon">LDFlag<wbr>Changeset</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldflagset.html" class="tsd-kind-icon">LDFlag<wbr>Set</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-kind-icon">LDFlags<wbr>State</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagdetailchangedhandler.html" class="tsd-kind-icon">LDInspection<wbr>Flag<wbr>Detail<wbr>Changed<wbr>Handler</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagdetailschangedhandler.html" class="tsd-kind-icon">LDInspection<wbr>Flag<wbr>Details<wbr>Changed<wbr>Handler</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagusedhandler.html" class="tsd-kind-icon">LDInspection<wbr>Flag<wbr>Used<wbr>Handler</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionidentifyhandler.html" class="tsd-kind-icon">LDInspection<wbr>Identify<wbr>Handler</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldlogger.html" class="tsd-kind-icon">LDLogger</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.ldoptions.html" class="tsd-kind-icon">LDOptions</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="interfaces/_launchdarkly_electron_client_sdk_.lduser.html" class="tsd-kind-icon">LDUser</a></li>
@@ -99,6 +104,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="index.html#ldevaluationreason" class="tsd-kind-icon">LDEvaluation<wbr>Reason</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="index.html#ldflagvalue" class="tsd-kind-icon">LDFlag<wbr>Value</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="index.html#ldinspection" class="tsd-kind-icon">LDInspection</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="index.html#ldloglevel" class="tsd-kind-icon">LDLog<wbr>Level</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -127,7 +134,7 @@
 					<div class="tsd-signature tsd-kind-icon">LDEvaluation<wbr>Reason<span class="tsd-signature-symbol">:</span> <a href="interfaces/_launchdarkly_electron_client_sdk_.nonnullableldevaluationreason.html" class="tsd-signature-type">NonNullableLDEvaluationReason</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in docs/build/typings.d.ts:422</li>
+							<li>Defined in docs/build/typings.d.ts:468</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -152,6 +159,35 @@
 							<p>The types of values a feature flag can have.</p>
 						</div>
 						<p>Flags can have any JSON-serializable value.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="ldinspection" class="tsd-anchor"></a>
+					<h3>LDInspection</h3>
+					<div class="tsd-signature tsd-kind-icon">LDInspection<span class="tsd-signature-symbol">:</span> <a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagusedhandler.html" class="tsd-signature-type">LDInspectionFlagUsedHandler</a><span class="tsd-signature-symbol"> | </span><a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagdetailschangedhandler.html" class="tsd-signature-type">LDInspectionFlagDetailsChangedHandler</a><span class="tsd-signature-symbol"> | </span><a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagdetailchangedhandler.html" class="tsd-signature-type">LDInspectionFlagDetailChangedHandler</a><span class="tsd-signature-symbol"> | </span><a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionidentifyhandler.html" class="tsd-signature-type">LDInspectionIdentifyHandler</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in docs/build/typings.d.ts:973</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="ldloglevel" class="tsd-anchor"></a>
+					<h3>LDLog<wbr>Level</h3>
+					<div class="tsd-signature tsd-kind-icon">LDLog<wbr>Level<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"debug"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"info"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"warn"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"error"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"none"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in docs/build/typings.d.ts:873</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Logging levels that can be used with [[basicLogger]].</p>
+						</div>
+						<p>Set <a href="interfaces/_launchdarkly_electron_client_sdk_.basicloggeroptions.html#level">BasicLoggerOptions.level</a> to one of these values to control what levels
+							of log messages are enabled. Going from lowest importance (and most verbose)
+							to most importance, the levels are <code>&#39;debug&#39;</code>, <code>&#39;info&#39;</code>, <code>&#39;warn&#39;</code>, and <code>&#39;error&#39;</code>.
+						You can also specify <code>&#39;none&#39;</code> instead to disable all logging.</p>
 					</div>
 				</section>
 			</section>
@@ -185,7 +221,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in docs/build/typings.d.ts:64</li>
+									<li>Defined in docs/build/typings.d.ts:66</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -196,6 +232,11 @@
 									respectively.</p>
 								</div>
 								<p>To make LDClient use this logger, put it in the <code>logger</code> property of <a href="interfaces/_launchdarkly_electron_client_sdk_.ldoptions.html">LDOptions</a>.</p>
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>Please use <code>basicLogger</code> instead.</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -217,7 +258,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in docs/build/typings.d.ts:876</li>
+									<li>Defined in docs/build/typings.d.ts:1114</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -251,7 +292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in docs/build/typings.d.ts:753</li>
+									<li>Defined in docs/build/typings.d.ts:991</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -298,7 +339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in docs/build/typings.d.ts:769</li>
+									<li>Defined in docs/build/typings.d.ts:1007</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -344,6 +385,9 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="interfaces/_launchdarkly_electron_client_sdk_.basicloggeroptions.html" class="tsd-kind-icon">Basic<wbr>Logger<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="interfaces/_launchdarkly_electron_client_sdk_.ldelectronmainclient.html" class="tsd-kind-icon">LDElectron<wbr>Main<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
@@ -365,6 +409,18 @@
 						<a href="interfaces/_launchdarkly_electron_client_sdk_.ldflagsstate.html" class="tsd-kind-icon">LDFlags<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagdetailchangedhandler.html" class="tsd-kind-icon">LDInspection<wbr>Flag<wbr>Detail<wbr>Changed<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagdetailschangedhandler.html" class="tsd-kind-icon">LDInspection<wbr>Flag<wbr>Details<wbr>Changed<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionflagusedhandler.html" class="tsd-kind-icon">LDInspection<wbr>Flag<wbr>Used<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="interfaces/_launchdarkly_electron_client_sdk_.ldinspectionidentifyhandler.html" class="tsd-kind-icon">LDInspection<wbr>Identify<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="interfaces/_launchdarkly_electron_client_sdk_.ldlogger.html" class="tsd-kind-icon">LDLogger</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
@@ -381,6 +437,12 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="index.html#ldflagvalue" class="tsd-kind-icon">LDFlag<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="index.html#ldinspection" class="tsd-kind-icon">LDInspection</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="index.html#ldloglevel" class="tsd-kind-icon">LDLog<wbr>Level</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="index.html#version" class="tsd-kind-icon">version</a>
