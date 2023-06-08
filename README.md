@@ -4,7 +4,7 @@
 
 ## LaunchDarkly overview
 
-[LaunchDarkly](https://www.launchdarkly.com) is a feature management platform that serves over 100 billion feature flags daily to help teams build better software, faster. [Get started](https://docs.launchdarkly.com/home/getting-started) using LaunchDarkly today!
+[LaunchDarkly](https://www.launchdarkly.com) is a feature management platform that serves trillions of feature flags daily to help teams build better software, faster. [Get started](https://docs.launchdarkly.com/home/getting-started) using LaunchDarkly today!
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/launchdarkly.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/intent/follow?screen_name=launchdarkly)
 
@@ -20,7 +20,7 @@ Please note that the Electron SDK, like the [browser Javascript SDK](https://doc
 
 ## Learn more
 
-Check out our [documentation](https://docs.launchdarkly.com) for in-depth instructions on configuring and using LaunchDarkly. You can also head straight to the [complete reference guide for this SDK](https://docs.launchdarkly.com/docs/electron-sdk-reference). Additionally, the authoritative full description of all properties, types, and methods is the [online TypeScript documentation](https://launchdarkly.github.io/electron-client-sdk/). If you are not using TypeScript, then the types are only for your information and are not enforced, although the properties and methods are still the same as described in the documentation.
+Read our [documentation](https://docs.launchdarkly.com) for in-depth instructions on configuring and using LaunchDarkly. You can also head straight to the [complete reference guide for this SDK](https://docs.launchdarkly.com/docs/electron-sdk-reference). Additionally, the authoritative full description of all properties, types, and methods is the [online TypeScript documentation](https://launchdarkly.github.io/electron-client-sdk/). If you are not using TypeScript, then the types are only for your information and are not enforced, although the properties and methods are still the same as described in the documentation.
 
 For an example of using the SDK in a simple Electron application, see [`hello-electron`](https://github.com/launchdarkly/hello-electron).
 
