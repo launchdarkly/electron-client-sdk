@@ -340,12 +340,12 @@ declare module 'launchdarkly-electron-client-sdk' {
     /**
      * Tracks that a user performed an event.
      *
-     * LaunchDarkly automatically tracks pageviews and clicks that are specified in the Goals
-     * section of the dashboard. This can be used to track custom goals or other events that do
-     * not currently have goals.
+     * LaunchDarkly automatically tracks pageviews and clicks that are specified in the Metricss
+     * section of the dashboard. This can be used to track custom metrics (goals) or other events that do
+     * not currently have metrics.
      *
      * @param key
-     *   The name of the event, which may correspond to a goal in A/B tests.
+     *   The name of the event, which may correspond to a metric in experiments.
      * @param user
      *   The user to track.
      * @param data
