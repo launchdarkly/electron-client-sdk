@@ -16,7 +16,7 @@ function initializeInRenderer(optionalEnv, options = {}) {
   config = Object.assign({}, config, {
     stateProvider: interprocessSync.createStateProviderForRendererClient(env, initialState),
     streaming: false, // don't want the renderer client to open a stream if someone subscribes to change events
-    fetchGoals: false, // click/pageview goals aren't supported in Electron
+    fetchGoals: false, // click/pageview metrics aren't supported in Electron
     eventUrlTransformer: makeEventUrlTransformer(),
   });
   return browserClient.initialize(env, null, config);
