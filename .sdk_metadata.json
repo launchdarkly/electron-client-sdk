@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "sdks": {
+    "electron": {
+      "name": "Electron SDK",
+      "type": "client-side",
+      "languages": [
+        "JavaScript", "TypeScript"
+      ]
+    }
+  }
+}
