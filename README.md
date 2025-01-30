@@ -1,7 +1,5 @@
 # LaunchDarkly Client-Side Electron SDK
 
-[![Circle CI](https://circleci.com/gh/launchdarkly/electron-client-sdk.svg?style=svg)](https://circleci.com/gh/launchdarkly/electron-client-sdk)
-
 ## LaunchDarkly overview
 
 [LaunchDarkly](https://www.launchdarkly.com) is a feature management platform that serves trillions of feature flags daily to help teams build better software, faster. [Get started](https://docs.launchdarkly.com/home/getting-started) using LaunchDarkly today!
