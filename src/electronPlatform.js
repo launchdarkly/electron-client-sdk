@@ -9,7 +9,8 @@ function makeElectronPlatform(options) {
 
   const ret = {};
 
-  ret.httpRequest = (method, url, headers, body) => newHttpRequest(method, url, headers, body, tlsParams);
+  ret.httpRequest = (method, url, headers, body) =>
+    newHttpRequest(method, url, headers, body, tlsParams, options && options.useNetModule);
 
   ret.httpAllowsPost = () => true;
 

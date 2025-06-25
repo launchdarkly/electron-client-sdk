@@ -5,19 +5,20 @@ const http = require('http');
 const https = require('https');
 const url = require('url');
 
-function newHttpRequest(method, requestUrl, headers, body, tlsParams) {
+let electronNet;
+try {
+  electronNet = require('electron').net;
+} catch (_) {
+  // Not in Electron or outside main process
+}
+
+function newHttpRequest(method, requestUrl, headers, body, tlsParams, useNetModule) {
   const urlParams = url.parse(requestUrl);
   const isHttps = urlParams.protocol === 'https:';
 
-  const requestParams = Object.assign({}, isHttps ? tlsParams : {}, urlParams, {
-    method: method,
-    headers: headers,
-    body: body,
-  });
-
   let request;
   const p = new Promise((resolve, reject) => {
-    request = (isHttps ? https : http).request(requestParams, res => {
+    const onResponse = res => {
       let resBody = '';
       res.on('data', chunk => {
         resBody += chunk;
@@ -29,12 +30,31 @@ function newHttpRequest(method, requestUrl, headers, body, tlsParams) {
           body: resBody,
         });
       });
-    });
+    };
+
+    if (useNetModule && electronNet) {
+      request = electronNet.request({ method, url: requestUrl });
+
+      for (const [key, value] of Object.entries(headers)) {
+        request.setHeader(key, value);
+      }
+
+      request.on('response', onResponse);
+    } else {
+      const requestParams = Object.assign({}, isHttps ? tlsParams : {}, urlParams, {
+        method: method,
+        headers: headers,
+        body: body,
+      });
+
+      request = (isHttps ? https : http).request(requestParams, onResponse);
+    }
 
     request.on('error', reject);
     if (body) {
       request.write(body);
     }
+
     request.end();
   });
 
