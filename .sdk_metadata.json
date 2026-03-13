@@ -7,7 +7,19 @@
       "languages": [
         "JavaScript", "TypeScript"
       ],
-      "wrapperNames": ["ElectronClient"]
+      "wrapperNames": ["ElectronClient"],
+      "features": {
+        "allFlags": { "introduced": "1.0" },
+        "bigSegments": { "introduced": "1.0" },
+        "bootstrapping": { "introduced": "1.0" },
+        "experimentation": { "introduced": "1.0" },
+        "flagChanges": { "introduced": "1.0" },
+        "privateAttrs": { "introduced": "1.0.1" },
+        "relayProxyProxy": { "introduced": "1.5.6" },
+        "secureMode": { "introduced": "1.5" },
+        "track": { "introduced": "1.1.4" },
+        "variationDetail": { "introduced": "1.5.7" }
+      }
     }
   }
 }
