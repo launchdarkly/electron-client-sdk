@@ -60,6 +60,7 @@ declare module 'launchdarkly-electron-client-sdk' {
    * Initialization options for the LaunchDarkly Electron SDK.
    */
   export interface LDOptions extends LDOptionsBase {
+    useNetModule?: boolean;
   }
 
   /**

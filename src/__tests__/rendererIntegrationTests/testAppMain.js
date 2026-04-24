@@ -10,6 +10,7 @@ const ldOptions = {
   logger: ldElectron.createConsoleLogger('debug'),
   streaming: args.streaming,
   useReport: true,
+  useNetModule: args.useNetModule === true,
 };
 
 const testConfig = {
