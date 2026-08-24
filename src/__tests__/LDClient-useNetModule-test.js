@@ -62,7 +62,7 @@ describe('LDClient', () => {
   });
 
   describe('track()', () => {
-    it("sends events through Electron's net module", async () => {
+    it('sends events when useNetModule is enabled', async () => {
       await withCloseable(TestHttpServers.start, async server => {
         server.byDefault(TestHttpHandlers.respond(200));
         const client = LDClient.initializeInMain(envName, user, {
