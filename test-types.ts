@@ -13,6 +13,8 @@ var allOptions: ld.LDOptions = {
   streamUrl: '',
   streaming: true,
   useReport: true,
+  useNetModule: true,
+  tlsParams: { rejectUnauthorized: false },
   sendLDHeaders: true,
   evaluationReasons: true,
   sendEvents: true,

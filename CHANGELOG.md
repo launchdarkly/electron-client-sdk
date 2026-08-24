@@ -2,6 +2,10 @@
 
 All notable changes to the LaunchDarkly Electron SDK will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org).
 
+## [Unreleased]
+### Added:
+- Added the `useNetModule` option for sending polling, analytics event, and diagnostic requests through Electron's `net` module. Custom `tlsParams` do not apply to this transport.
+
 ## [1.7.0] - 2022-10-21
 ### Changed:
 - Updated `launchdarkly-js-sdk-common` to version `3.8.3`.

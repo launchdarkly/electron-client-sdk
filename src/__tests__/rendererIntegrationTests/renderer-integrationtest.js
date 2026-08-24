@@ -70,6 +70,17 @@ describe('full application integration tests', () => {
     await expect(app.getClientFlags(0)).resolves.toEqual(flags);
   });
 
+  doTest("loads flags through Electron's net module", async (fakeLD, app) => {
+    const env = fakeLD.addEnvironment(defaultEnvId);
+    const flags = { flag1: 'value1', flag2: 'value2' };
+    env.addUser(defaultUserKey, flags);
+
+    await app.start({ useNetModule: true });
+
+    await expect(app.getClientUserKey(0)).resolves.toEqual(defaultUserKey);
+    await expect(app.getClientFlags(0)).resolves.toEqual(flags);
+  });
+
   doTest('sends events from renderer client', async (fakeLD, app) => {
     const env = fakeLD.addEnvironment(defaultEnvId);
     env.addUser(defaultUserKey, { flag1: 'value1' });

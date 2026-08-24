@@ -60,6 +60,25 @@ declare module 'launchdarkly-electron-client-sdk' {
    * Initialization options for the LaunchDarkly Electron SDK.
    */
   export interface LDOptions extends LDOptionsBase {
+    /**
+     * TLS configuration parameters supported by Node's `https.request()`.
+     *
+     * The SDK passes these parameters to Node's `https.request()` when `useNetModule` is false. Electron's
+     * `net` module does not accept per-request TLS parameters, so the SDK ignores this option and logs a
+     * warning when both options are set.
+     */
+    tlsParams?: object;
+
+    /**
+     * Whether to use Electron's `net` module for polling, analytics event, and diagnostic requests made
+     * by the main-process client. This allows those requests to use Chromium's networking stack and proxy
+     * configuration. It does not change the transport used for streaming connections. Since Electron only
+     * makes the `net` API available after the app is ready, call `initializeInMain` after Electron's `ready`
+     * event when enabling this option.
+     *
+     * When this option is true, Chromium handles TLS configuration and the SDK does not apply `tlsParams`.
+     * The default is false.
+     */
     useNetModule?: boolean;
   }
 
