@@ -6,6 +6,19 @@ import * as ld from 'launchdarkly-electron-client-sdk';
 
 var emptyOptions: ld.LDOptions = {};
 var logger: ld.LDLogger = ld.createConsoleLogger("info");
+var httpResponse: ld.LDHttpResponse = {
+  status: 200,
+  header: (name: string) => name.toLowerCase() === 'content-type' ? 'application/json' : undefined,
+  body: '{}'
+};
+var httpRequestResult: ld.LDHttpRequestResult = {
+  promise: Promise.resolve(httpResponse)
+};
+var cancellableHttpRequestResult: ld.LDHttpRequestResult = {
+  promise: Promise.resolve(httpResponse),
+  cancel: () => {}
+};
+var httpRequest: ld.LDHttpRequest = (method, url, headers, body) => httpRequestResult;
 var allOptions: ld.LDOptions = {
   bootstrap: { },
   baseUrl: '',
@@ -13,7 +26,7 @@ var allOptions: ld.LDOptions = {
   streamUrl: '',
   streaming: true,
   useReport: true,
-  useNetModule: true,
+  httpRequest: httpRequest,
   tlsParams: { rejectUnauthorized: false },
   sendLDHeaders: true,
   evaluationReasons: true,

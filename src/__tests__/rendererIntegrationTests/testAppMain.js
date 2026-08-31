@@ -10,8 +10,11 @@ const ldOptions = {
   logger: ldElectron.createConsoleLogger('debug'),
   streaming: args.streaming,
   useReport: true,
-  useNetModule: args.useNetModule === true,
 };
+
+if (args.httpRequest === true) {
+  ldOptions.httpRequest = makeElectronNetHttpRequest;
+}
 
 const testConfig = {
   testName: 'test name unknown',
@@ -59,3 +62,63 @@ app.on('ready', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => app.quit());
+
+function makeElectronNetHttpRequest(method, url, headers, body) {
+  let request;
+  let rejectRequest;
+  const promise = new Promise((resolve, reject) => {
+    rejectRequest = reject;
+    request = electron.net.request({ method, url });
+    Object.keys(headers).forEach(name => request.setHeader(name, headers[name]));
+    request.setHeader('X-Test-Http-Request', 'electron.net');
+
+    request.on('response', response => {
+      let responseBody = '';
+      let responseEnded = false;
+
+      response.on('data', chunk => {
+        responseBody += chunk;
+      });
+      response.on('error', reject);
+      response.on('aborted', () => reject(new Error('response aborted')));
+      response.on('end', () => {
+        responseEnded = true;
+        if (response.complete === false) {
+          reject(new Error('response body was incomplete'));
+          return;
+        }
+
+        const responseHeaders = Object.keys(response.headers).reduce((result, name) => {
+          const value = response.headers[name];
+          return Object.assign({}, result, {
+            [name.toLowerCase()]: Array.isArray(value) ? value.join(', ') : String(value),
+          });
+        }, {});
+        resolve({
+          status: response.statusCode,
+          header: name => responseHeaders[name.toLowerCase()],
+          body: responseBody,
+        });
+      });
+      response.on('close', () => {
+        if (!responseEnded) {
+          reject(new Error('response body was incomplete'));
+        }
+      });
+    });
+    request.on('error', reject);
+    request.on('abort', () => reject(new Error('request aborted')));
+    if (body) {
+      request.write(body);
+    }
+    request.end();
+  });
+
+  return {
+    promise,
+    cancel: () => {
+      request.abort();
+      rejectRequest(new Error('request aborted'));
+    },
+  };
+}

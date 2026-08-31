@@ -6,18 +6,18 @@ const packageJson = require('../package.json');
 
 function makeElectronPlatform(options, logger) {
   const tlsParams = filterTlsParams(options && options.tlsParams);
-  const useNetModule = options && options.useNetModule;
+  const customHttpRequest = options && typeof options.httpRequest === 'function' ? options.httpRequest : undefined;
 
-  if (useNetModule && Object.keys(tlsParams).length > 0 && logger && typeof logger.warn === 'function') {
+  if (customHttpRequest && Object.keys(tlsParams).length > 0 && logger && typeof logger.warn === 'function') {
     logger.warn(
-      "The useNetModule option is enabled, so tlsParams will be ignored. Electron's net module delegates TLS " +
-        'configuration to Chromium. Disable useNetModule to use custom TLS parameters.'
+      'The httpRequest option is set, so tlsParams will not be applied to polling, analytics, or diagnostic requests.'
     );
   }
 
   const ret = {};
 
-  ret.httpRequest = (method, url, headers, body) => newHttpRequest(method, url, headers, body, tlsParams, useNetModule);
+  ret.httpRequest =
+    customHttpRequest || ((method, url, headers, body) => newHttpRequest(method, url, headers, body, tlsParams));
 
   ret.httpAllowsPost = () => true;
 

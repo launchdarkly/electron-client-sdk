@@ -16,11 +16,11 @@ Refer to the [SDK documentation](https://docs.launchdarkly.com/sdk/client-side/e
 
 Please note that the Electron SDK, like the [browser Javascript SDK](https://docs.launchdarkly.com/sdk/client-side/javascript), has two special requirements in terms of your LaunchDarkly environment. First, in terms of the credentials for your environment that appear on your [Account Settings](https://app.launchdarkly.com/settings/projects) dashboard, the JavaScript SDK uses the "Client-side ID" (also called the environment ID)-- not the "SDK key" or the "Mobile key". Second, for any feature flag that you will be using in Electron, you must check the "Make this flag available to client-side SDKs" box on that flag's Settings page.
 
-## Using Electron's net module
+## Custom HTTP requests
 
-Set `useNetModule` to `true` in the options passed to `initializeInMain` to send polling, analytics event, and diagnostic requests through Electron's [`net` module](https://www.electronjs.org/docs/latest/api/net). This uses Chromium's networking stack and system proxy configuration. Streaming connections continue to use the SDK's EventSource transport. Since Electron only makes the `net` API available after the app is ready, call `initializeInMain` after the app's `ready` event when enabling this option.
+Set `httpRequest` in the options passed to `initializeInMain` to provide the transport for polling, analytics, and diagnostic requests. Streaming connections continue to use the SDK's EventSource transport.
 
-Electron handles TLS configuration for `net` requests. The SDK does not apply `tlsParams` such as a custom `ca`, `cert`, or `rejectUnauthorized` value when `useNetModule` is enabled, and logs a warning if both options are set. Leave `useNetModule` unset or set it to `false` when the SDK must use custom Node HTTPS configuration.
+The custom function controls its proxy, redirect, certificate, header, and cancellation behavior. When both `httpRequest` and supported `tlsParams` values are set, the custom function takes precedence for these requests and the SDK logs a warning. Leave `httpRequest` unset to use the default Node `http` and `https` transport with `tlsParams`.
 
 ## Learn more
 

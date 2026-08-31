@@ -14,8 +14,8 @@ function initializeInMain(env, user, options = {}) {
   const logger = options.logger || createDefaultLogger();
   const platform = electronPlatform(options, logger);
   const extraOptionDefs = {
+    httpRequest: { type: 'function' },
     tlsParams: { type: 'object' },
-    useNetModule: { default: false },
   };
   if (!options.logger) {
     extraOptionDefs.logger = { default: logger };

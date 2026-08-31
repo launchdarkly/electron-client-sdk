@@ -46,6 +46,34 @@ describe('LDClient streaming', () => {
     });
   });
 
+  it('does not use httpRequest for streaming', async () => {
+    await withCloseable(TestHttpServers.start, async server => {
+      await withCloseable(new AsyncQueue(), async eventQueue => {
+        const eventData = { flag: { value: 'yes', version: 1 } };
+        const httpRequest = jest.fn();
+        eventQueue.add({ type: 'put', data: JSON.stringify(eventData) });
+        server.forMethodAndPath('get', expectedGetUrl, TestHttpHandlers.sseStream(eventQueue));
+
+        const config = {
+          bootstrap: {},
+          streaming: true,
+          streamUrl: server.url,
+          sendEvents: false,
+          httpRequest,
+        };
+        await withCloseable(LDClient.initializeInMain(envName, user, config), async client => {
+          const changeEvents = eventSink(client, 'change:flag');
+          await client.waitForInitialization();
+
+          const value = await changeEvents.take();
+          expect(value).toEqual(['yes', undefined]);
+          expect(httpRequest).not.toHaveBeenCalled();
+          expect(server.requestCount()).toEqual(1);
+        });
+      });
+    });
+  });
+
   it('makes REPORT request and receives an event', async () => {
     await withCloseable(TestHttpServers.start, async server => {
       await withCloseable(new AsyncQueue(), async eventQueue => {

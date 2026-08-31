@@ -4,7 +4,7 @@ All notable changes to the LaunchDarkly Electron SDK will be documented in this 
 
 ## [Unreleased]
 ### Added:
-- Added the `useNetModule` option for sending polling, analytics event, and diagnostic requests through Electron's `net` module. Custom `tlsParams` do not apply to this transport.
+- Added the optional `httpRequest` hook for supplying the transport used by polling, analytics, and diagnostic requests. Streaming connections continue to use EventSource, and custom `tlsParams` do not apply to the custom transport.
 
 ## [1.7.0] - 2022-10-21
 ### Changed:
