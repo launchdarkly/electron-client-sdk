@@ -11,7 +11,7 @@ const packageJson = require('../package.json');
 // initializeRenderer).
 function initializeInMain(env, user, options = {}) {
   // Pass our platform object to the common code to create the Electron version of the client
-  const logger = options.logger || createDefaultLogger();
+  const logger = options.logger && typeof options.logger.warn === 'function' ? options.logger : createDefaultLogger();
   const platform = electronPlatform(options, logger);
   const extraOptionDefs = {
     httpRequest: { type: 'function' },

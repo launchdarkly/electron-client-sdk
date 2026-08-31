@@ -8,7 +8,7 @@ function makeElectronPlatform(options, logger) {
   const tlsParams = filterTlsParams(options && options.tlsParams);
   const customHttpRequest = options && typeof options.httpRequest === 'function' ? options.httpRequest : undefined;
 
-  if (customHttpRequest && Object.keys(tlsParams).length > 0 && logger && typeof logger.warn === 'function') {
+  if (customHttpRequest && Object.keys(tlsParams).length > 0) {
     logger.warn(
       'The httpRequest option is set, so tlsParams will not be applied to polling, analytics, or diagnostic requests.'
     );
