@@ -5,7 +5,8 @@
     "lib": [
       "es6",
       "dom"
-    ]
+    ],
+    "types": []
   },
   "files": [
     "typings.d.ts",

@@ -16,6 +16,7 @@ const spectron = require('spectron');
 //   testName: will be displayed in the window
 //   userKey: clients will be initialized with this user
 //   streaming: true to enable streaming
+//   httpRequest: true to use the test application's custom HTTP implementation
 
 function testAppClient(fakeLD, baseOptions) {
   let app;
@@ -52,6 +53,7 @@ function testAppClient(fakeLD, baseOptions) {
     args.push('-u', options.userKey);
     args.push('-e', envs.join(','));
     options.streaming && args.push('--streaming');
+    options.httpRequest && args.push('--httpRequest');
 
     app = new spectron.Application({
       path: electron,

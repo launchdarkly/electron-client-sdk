@@ -16,6 +16,12 @@ Refer to the [SDK documentation](https://docs.launchdarkly.com/sdk/client-side/e
 
 Please note that the Electron SDK, like the [browser Javascript SDK](https://docs.launchdarkly.com/sdk/client-side/javascript), has two special requirements in terms of your LaunchDarkly environment. First, in terms of the credentials for your environment that appear on your [Account Settings](https://app.launchdarkly.com/settings/projects) dashboard, the JavaScript SDK uses the "Client-side ID" (also called the environment ID)-- not the "SDK key" or the "Mobile key". Second, for any feature flag that you will be using in Electron, you must check the "Make this flag available to client-side SDKs" box on that flag's Settings page.
 
+## Custom HTTP requests
+
+Set `httpRequest` in the options passed to `initializeInMain` to provide the transport for polling, analytics, and diagnostic requests. Streaming connections continue to use the SDK's EventSource transport.
+
+The custom function controls its proxy, redirect, certificate, header, and cancellation behavior. When both `httpRequest` and supported `tlsParams` values are set, the custom function takes precedence for these requests and the SDK logs a warning. Leave `httpRequest` unset to use the default Node `http` and `https` transport with `tlsParams`.
+
 ## Learn more
 
 Read our [documentation](https://docs.launchdarkly.com) for in-depth instructions on configuring and using LaunchDarkly. You can also head straight to the [complete reference guide for this SDK](https://docs.launchdarkly.com/docs/electron-sdk-reference). Additionally, the authoritative full description of all properties, types, and methods is the [online TypeScript documentation](https://launchdarkly.github.io/electron-client-sdk/). If you are not using TypeScript, then the types are only for your information and are not enforced, although the properties and methods are still the same as described in the documentation.

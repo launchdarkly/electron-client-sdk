@@ -57,9 +57,79 @@ declare module 'launchdarkly-electron-client-sdk' {
   export function initializeInRenderer(envKey?: string, options?: LDOptions): LDElectronRendererClient;
 
   /**
+   * A completed HTTP response returned by [[LDHttpRequest]].
+   */
+  export interface LDHttpResponse {
+    /**
+     * The HTTP status code.
+     */
+    status: number;
+
+    /**
+     * Returns a response header value, or `undefined` if the response did not include the header.
+     *
+     * Header names are case-insensitive. If the response contains more than one value for the header,
+     * this method returns one normalized string.
+     */
+    header(name: string): string | undefined;
+
+    /**
+     * The complete response body.
+     */
+    body: string;
+  }
+
+  /**
+   * The pending work returned synchronously by [[LDHttpRequest]].
+   */
+  export interface LDHttpRequestResult {
+    /**
+     * Resolves for every completed HTTP response, including non-2xx responses. It rejects for connection
+     * failures, aborted or incomplete response bodies, and other transport errors.
+     */
+    promise: Promise<LDHttpResponse>;
+
+    /**
+     * Cancels the request when the transport supports cancellation.
+     */
+    cancel?: () => void;
+  }
+
+  /**
+   * Makes an HTTP request for the main-process client.
+   *
+   * The function returns before the request completes so that it can provide cancellation while its promise
+   * is pending.
+   */
+  export type LDHttpRequest = (
+    method: string,
+    url: string,
+    headers: Record<string, string>,
+    body?: string
+  ) => LDHttpRequestResult;
+
+  /**
    * Initialization options for the LaunchDarkly Electron SDK.
    */
   export interface LDOptions extends LDOptionsBase {
+    /**
+     * TLS configuration parameters supported by Node's `https.request()`.
+     *
+     * The SDK passes these parameters to its default HTTP transport. When [[httpRequest]] is set, the SDK
+     * does not apply these parameters to polling, analytics, or diagnostic requests and logs a warning.
+     */
+    tlsParams?: object;
+
+    /**
+     * An HTTP implementation for polling, analytics, and diagnostic requests made by the main-process client.
+     * Streaming connections continue to use EventSource.
+     *
+     * The custom implementation controls proxy use, redirects, certificates, request headers, and cancellation.
+     * It must return an [[LDHttpRequestResult]] synchronously. Its promise must resolve for all completed HTTP
+     * responses, including non-2xx responses, and reject for transport errors and incomplete response bodies.
+     * The SDK uses its Node `http` and `https` implementation when this option is omitted.
+     */
+    httpRequest?: LDHttpRequest;
   }
 
   /**

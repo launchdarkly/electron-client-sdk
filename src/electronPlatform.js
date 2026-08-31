@@ -4,12 +4,20 @@ const { EventSource } = require('launchdarkly-eventsource');
 const newHttpRequest = require('./httpRequest');
 const packageJson = require('../package.json');
 
-function makeElectronPlatform(options) {
+function makeElectronPlatform(options, logger) {
   const tlsParams = filterTlsParams(options && options.tlsParams);
+  const customHttpRequest = options && typeof options.httpRequest === 'function' ? options.httpRequest : undefined;
+
+  if (customHttpRequest && Object.keys(tlsParams).length > 0) {
+    logger.warn(
+      'The httpRequest option is set, so tlsParams will not be applied to polling, analytics, or diagnostic requests.'
+    );
+  }
 
   const ret = {};
 
-  ret.httpRequest = (method, url, headers, body) => newHttpRequest(method, url, headers, body, tlsParams);
+  ret.httpRequest =
+    customHttpRequest || ((method, url, headers, body) => newHttpRequest(method, url, headers, body, tlsParams));
 
   ret.httpAllowsPost = () => true;
 

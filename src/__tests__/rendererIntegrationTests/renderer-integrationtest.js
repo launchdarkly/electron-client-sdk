@@ -70,6 +70,18 @@ describe('full application integration tests', () => {
     await expect(app.getClientFlags(0)).resolves.toEqual(flags);
   });
 
+  doTest('loads flags through a custom Electron net request', async (fakeLD, app) => {
+    const env = fakeLD.addEnvironment(defaultEnvId);
+    const flags = { flag1: 'value1', flag2: 'value2' };
+    env.addUser(defaultUserKey, flags);
+
+    await app.start({ httpRequest: true });
+
+    await expect(app.getClientUserKey(0)).resolves.toEqual(defaultUserKey);
+    await expect(app.getClientFlags(0)).resolves.toEqual(flags);
+    expect(env.getLastPollRequest().headers['x-test-http-request']).toEqual('electron.net');
+  });
+
   doTest('sends events from renderer client', async (fakeLD, app) => {
     const env = fakeLD.addEnvironment(defaultEnvId);
     env.addUser(defaultUserKey, { flag1: 'value1' });

@@ -26,6 +26,7 @@ async function fakeLaunchDarkly() {
   me.addEnvironment = envId => {
     const events = new AsyncQueue();
     const users = {};
+    let lastPollRequest;
 
     const forUser = action => (req, res) => {
       const user = JSON.parse(req.body);
@@ -42,6 +43,7 @@ async function fakeLaunchDarkly() {
       'report',
       '/sdk/evalx/' + envId + '/user',
       forUser((u, req, res) => {
+        lastPollRequest = req;
         TestHttpHandlers.respondJson(u.flags)(req, res);
       })
     );
@@ -80,6 +82,7 @@ async function fakeLaunchDarkly() {
     return {
       events,
       addUser,
+      getLastPollRequest: () => lastPollRequest,
       nextEvent: async () => await events.take(),
     };
   };
